@@ -71,9 +71,14 @@
             margin: 0 !important;
             padding: 0 !important;
         }
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        
+
+        canvas {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            position:absolute;
+            top:0%;
+            left:0%;
+        }
     </style>
 
     <body onload="init()">

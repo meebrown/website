@@ -9,9 +9,19 @@
 
     var x = "black",
         y = 5;
+
+    const canvas = document.querySelector("canvas");
+
+    const resize = () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    }
+
+    resize()
+    window.addEventListener('resize', resize)
     
     function init() {
-        canvas = document.getElementById('can');
+        canvas = document.getElementById('canvas');
         ctx = canvas.getContext("2d");
         w = canvas.width;
         h = canvas.height;
@@ -69,17 +79,9 @@
         html, body {
             overflow: hidden;
         }
-
-        #can {
-            position:absolute;
-            top:0%;
-            left:0%;
-            right:0%;
-            bottom:0%;
-        }
     </style>
 
     <body onload="init()">
-        <canvas id="can" width = "document.body.clientWidth" height = "document.body.clientHeight"></canvas>
+        <canvas id="canvas"></canvas>
     </body>
     </html>

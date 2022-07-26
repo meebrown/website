@@ -23,6 +23,8 @@
     function init() {
         canvas = document.getElementById('canvas');
         ctx = canvas.getContext("2d");
+        w = window.innerWidth;
+        h = window.innerHeight;
     
         canvas.addEventListener("mousemove", function (e) {
             findxy('move', e)

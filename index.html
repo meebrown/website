@@ -64,8 +64,20 @@
         }
     }
     </script>
+
+    <style>
+        html, body {
+            overflow: hidden;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+    </style>
+
     <body onload="init()">
-        <canvas id="can" width="window.innerWidth" height="window.innerHeight" style="position:absolute;top:0%;left:0%;"></canvas>
+        <canvas style="position:absolute;top:0%;left:0%;"></canvas>
         
         <img id="canvasimg" style="position:absolute;top:10%;left:52%;" style="display:none;">
     </body>

@@ -32,9 +32,9 @@
             // The actual function that will draw on event (mousemove)
             drawSketch(event) {
                 // If the draw boolean isn't true, terminate the function early
-                if (!this.draw) {
-                    return 0;
-                }
+                //if (!this.draw) {
+                //    return 0;
+                //}
                 // Select the canvas and get its context
                 let canvas = document.getElementById(this.canvas_id);
                 let ctx = canvas.getContext('2d');
@@ -60,9 +60,9 @@
                 ctx.stroke();
             }
             // Sets draw to false on event (mouseup)
-            stopDrawing(event) {
-                this.draw = true;
-            }
+            //stopDrawing(event) {
+            //    this.draw = true;
+            //}
         }
         
         // Write the main function that will execute on load
@@ -72,12 +72,12 @@
         
         // Add event listeners for the mousedown, mouseup, and 
         // mousemove. 
-        document.addEventListener('mousemove', function(e){
-            canvas.startDrawing(e);
-        });
-        document.addEventListener('mouseup', function(e){
-            canvas.stopDrawing(e);
-        });
+        //document.addEventListener('mousemove', function(e){
+        //    canvas.startDrawing(e);
+        //});
+        //document.addEventListener('mouseup', function(e){
+        //    canvas.stopDrawing(e);
+        //});
         document.addEventListener('mousemove', function(e){
             canvas.drawSketch(e);
         });

@@ -70,7 +70,7 @@
         function main() {
             // Initialize the main object, canvas
             let canvas = new Canvas("sketchCanvas", false, {x:0 , y:0});
-        }
+        
         // Add event listeners for the mousedown, mouseup, and 
         // mousemove. 
         document.addEventListener('mousedown', function(e){
@@ -82,6 +82,8 @@
         document.addEventListener('mousemove', function(e){
             canvas.drawSketch(e);
         });
+        }
+        
         // Wait until the page is loaded before applying the main function
         window.addEventListener("DOMContentLoaded", ()=>{        
             main();

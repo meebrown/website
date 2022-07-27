@@ -20,7 +20,7 @@
         
         window.onload = () => setTimeout(resizeWindow, 0);
 
-        var canvas1, ctx, flag = false,
+        var canvas, ctx, flag = false,
         prevX = 0,
         currX = 0,
         prevY = 0,
@@ -31,33 +31,31 @@
             y = 5;
         
         function init() {
-            canvas1 = document.getElementById('world');
-            ctx = canvas1.getContext("2d");
-            w = canvas1.width;
-            h = canvas1.height;
+            w = canvas.width;
+            h = canvas.height;
         
-            canvas1.addEventListener("mousemove", function (e) {
+            canvas.addEventListener("mousemove", function (e) {
                 findxy('move', e)
             }, false);
-            canvas1.addEventListener("mousedown", function (e) {
+            canvas.addEventListener("mousedown", function (e) {
                 findxy('down', e)
             }, false);
-            canvas1.addEventListener("mouseup", function (e) {
+            canvas.addEventListener("mouseup", function (e) {
                 findxy('up', e)
             }, false);
-            canvas1.addEventListener("mouseout", function (e) {
+            canvas.addEventListener("mouseout", function (e) {
                 findxy('out', e)
             }, false);
         }
         
         function draw() {
-            ctx.beginPath();
-            ctx.moveTo(prevX, prevY);
-            ctx.lineTo(currX, currY);
-            ctx.strokeStyle = x;
-            ctx.lineWidth = y;
-            ctx.stroke();
-            ctx.closePath();
+            context.beginPath();
+            context.moveTo(prevX, prevY);
+            context.lineTo(currX, currY);
+            context.strokeStyle = x;
+            context.lineWidth = y;
+            context.stroke();
+            context.closePath();
         }
         
         
@@ -65,17 +63,17 @@
             if (res == 'move') {
                 prevX = currX;
                 prevY = currY;
-                currX = e.clientX - canvas1.offsetLeft;
-                currY = e.clientY - canvas1.offsetTop;
+                currX = e.clientX - canvas.offsetLeft;
+                currY = e.clientY - canvas.offsetTop;
                 draw();
         
                 flag = true;
                 dot_flag = true;
                 if (dot_flag) {
-                    ctx.beginPath();
-                    ctx.fillStyle = x;
-                    ctx.fillRect(currX, currY, 2, 2);
-                    ctx.closePath();
+                    context.beginPath();
+                    context.fillStyle = x;
+                    context.fillRect(currX, currY, 2, 2);
+                    context.closePath();
                     dot_flag = false;
                 }
             }

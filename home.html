@@ -31,8 +31,7 @@
 
             // The actual function that will draw on event (mousemove)
             drawSketch(event) {
-                // If the draw boolean isn't true, terminate the function
-                early
+                // If the draw boolean isn't true, terminate the function early
                 if (!this.draw) {
                     return 0;
                 }
@@ -83,7 +82,7 @@
             canvas.drawSketch(e);
         });
         }
-        
+
         // Wait until the page is loaded before applying the main function
         window.addEventListener("DOMContentLoaded", ()=>{        
             main();

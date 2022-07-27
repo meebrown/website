@@ -45,7 +45,7 @@
                 // controls. The line cap is hardcoded to be rounded,
                 // because it looks more natural for a drawing application
                 ctx.strokeStyle = "black";
-                ctx.lineWidth = 5;
+                ctx.lineWidth = 6;
                 ctx.lineCap = "rounded";
                 // Start moving to the coordinates determined by mouse 
                 // movement. The position is updated as the cursor moves
@@ -61,7 +61,7 @@
             }
             // Sets draw to false on event (mouseup)
             stopDrawing(event) {
-                this.draw = false;
+                this.draw = true;
             }
         }
         
@@ -72,7 +72,7 @@
         
         // Add event listeners for the mousedown, mouseup, and 
         // mousemove. 
-        document.addEventListener('mousedown', function(e){
+        document.addEventListener('mousemove', function(e){
             canvas.startDrawing(e);
         });
         document.addEventListener('mouseup', function(e){

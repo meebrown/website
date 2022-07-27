@@ -6,12 +6,12 @@
 
     <script type="text/javascript">
 
-        const canvas = document.getElementById("world");
-        const context = canvas.getContext("2d");
+        var canvas = document.getElementById("world");
+        var context = canvas.getContext("2d");
         window.w = 0;
         window.h = 0;
 
-        const resizeWindow = function() {
+        var resizeWindow = function() {
         window.w = (canvas.width = window.innerWidth);
         return window.h = (canvas.height = window.innerHeight);
         };

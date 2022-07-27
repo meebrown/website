@@ -2,19 +2,32 @@
 <html lang="en">
 
     <script type="text/javascript">
-        const canvas = document.querySelector("canvas");
-    
-    const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    
-    resize()
-    window.addEventListener('resize', resize)
-        </script>
-        <body>
-           <canvas style="border:1px solid #000000;">
-    </canvas>
-        </body>
+        
+        canvas = document.getElementById "world"
+        context = canvas.getContext "2d"
+        window.w = 0
+        window.h = 0
+
+        resizeWindow = ->
+        window.w = canvas.width = window.innerWidth
+        window.h = canvas.height = window.innerHeight
+
+        window.addEventListener 'resize', resizeWindow, false
+        
+        window.onload = -> setTimeout resizeWindow, 0
+    </script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: #111;
+        }
+    </style>
+    <body>
+        <canvas id="world"></canvas>
+    </body>
 
 </html>

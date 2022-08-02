@@ -90,9 +90,15 @@
         //document.addEventListener('mouseup', function(e){
         //    canvas.stopDrawing(e);
         //});
-        document.addEventListener('mousemove', function(e){
-            canvas.drawSketch(e);
-        });
+            document.addEventListener('mousemove', function(e){
+                canvas.drawSketch(e);
+            });
+
+            var img = new Image();
+            img.src = '/SelfPortrait.jpg';
+            img.onload = function (e) {
+            context.drawImage(img, 100, 100,100,80);
+            }
         }
 
         // Wait until the page is loaded before applying the main function
@@ -106,5 +112,12 @@
         //    canvas.startDrawing(e);
         //    });
         //}
+
+        function images() {
+        var canvas  = document.getElementById("sketchCanvas");
+        var context = canvas.getContext('2d');
+
+        
+        }
     </script>
 </html>

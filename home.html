@@ -2,7 +2,7 @@
 <html lang="en">
     <body>
         <!--<a href="javascript:void(0)" >Self-portrait (2020)</a>-->      
-        <canvas id = "sketchCanvas" width = "10000" height = "10000"></canvas>
+        <canvas id = "sketchCanvas" width = "5000" height = "5000"></canvas>
     </body>
     <style>
         html, body {
@@ -114,7 +114,12 @@
             var img = new Image();
             img.src = 'https://meebrown.github.io/website/SelfPortrait.jpg';
             img.onload = function (e) {
-            context.drawImage(img, 300, 300, 160, 200);
+            context.drawImage(img, 200, 200, 160, 200);
+            }
+            var img1 = new Image();
+            img1.src = 'https://meebrown.github.io/website/PostHuman.jpg';
+            img1.onload = function (e) {
+            context.drawImage(img1, 360, 200, 189, 200);
             }
         }
     </script>

@@ -93,17 +93,12 @@
             document.addEventListener('mousemove', function(e){
                 canvas.drawSketch(e);
             });
-
-            var img = new Image();
-            img.src = '/SelfPortrait.jpg';
-            img.onload = function (e) {
-            context.drawImage(img, 100, 100,100,80);
-            }
         }
 
         // Wait until the page is loaded before applying the main function
         window.addEventListener("DOMContentLoaded", ()=>{        
             main();
+            images();
         });
 
         //change cursor to art piece
@@ -114,10 +109,13 @@
         //}
 
         function images() {
-        var canvas  = document.getElementById("sketchCanvas");
-        var context = canvas.getContext('2d');
-
-        
+            var canvas  = document.getElementById("sketchCanvas");
+            var context = canvas.getContext('2d');
+            var img = new Image();
+            img.src = '/SelfPortrait.jpg';
+            img.onload = function (e) {
+            context.drawImage(img, 100, 100,100,80);
+            }
         }
     </script>
 </html>

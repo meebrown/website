@@ -124,11 +124,16 @@
                 // Start the line
                 ctx.beginPath();
                 
+                //to set line width
+                var img = document.getElementById('editor');
+                var cs = getComputedStyle(img);
+                var width = parseInt(cs.getPropertyValue('height'), 10);
+
                 // Pull from the color and width from the associated 
                 // controls. The line cap is hardcoded to be rounded,
                 // because it looks more natural for a drawing application
                 ctx.strokeStyle = "black";
-                ctx.lineWidth = 1;
+                ctx.lineWidth = (width / 100);
                 ctx.lineCap = "rounded";
                 // Start moving to the coordinates determined by mouse 
                 // movement. The position is updated as the cursor moves

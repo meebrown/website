@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
     <body>
+        <div id="sliver"></div>
         <div id="editor-section">  
             <div class="editable" id="editor">
-                <img id="img1" src='https://meebrown.github.io/website/SelfPortrait.jpg' alt="">
-                <img id="img2" src='https://meebrown.github.io/website/PostHuman.jpg' alt="">
+                <div id="imgs">
+                    <img id="img1" src='https://meebrown.github.io/website/SelfPortrait.jpg' alt="">
+                    <img id="img2" src='https://meebrown.github.io/website/PostHuman.jpg' alt="">
+                </div>
             </div>
         </div> 
         
@@ -18,12 +21,21 @@
         }
 
         img {
-            max-height:10vh;
-            max-width:10vw;
+            max-height:25vh;
+            max-width:25vw;
             height:auto;
             width:auto;
             -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
             filter: grayscale(100%);
+        }
+
+        #sliver {
+            margin-top: 1vh;
+        }
+
+        #imgs {
+            margin-top: 15vh;
+            margin-left: 15vh;
         }
 
         img:hover { 

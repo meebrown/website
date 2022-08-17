@@ -6,20 +6,22 @@
     </body>
     <style>
         body {
-            margin: 5%;
-            padding: 5%;
+            margin: 10vw;
             overflow: hidden;
         }
 
         img {
-            max-height:10%;
-            max-width:10%;
+            max-height:10vh;
+            max-width:10vw;
             height:auto;
             width:auto;
+            -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+            filter: grayscale(100%);
         }
 
         img:hover { 
-            opacity: 0.75; 
+            -webkit-filter: grayscale(0%); /* Safari 6.0 - 9.0 */
+            filter: grayscale(0%);
         }
     </style>
 </html>

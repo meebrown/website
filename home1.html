@@ -70,6 +70,22 @@
         var parentDiv = document.getElementById("editor-section");
         parentDiv.appendChild(canvas);
 
+
+
+        /// get computed style for image
+        var img = document.getElementById('editor');
+        var cs = getComputedStyle(img);
+
+        /// these will return dimensions in *pixel* regardless of what
+        /// you originally specified for image:
+        var width = parseInt(cs.getPropertyValue('width'), 10);
+        var height = parseInt(cs.getPropertyValue('height'), 10);
+
+        canvas.width = width;
+        canvas.height = height;
+
+
+
         // Create a class for the canvas, including attributes for the id, // draw boolean, and coordinates
         class Canvas {
             constructor(canvas_id, draw, coord) {          

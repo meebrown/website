@@ -117,8 +117,8 @@
             startDrawing(event) {
                 this.draw = true;
                 let canvas = document.getElementById(this.canvas_id); 
-                this.coord.x = (event.clientX - canvas.getBoundingClientRect().left);
-                this.coord.y = (event.clientY - canvas.getBoundingClientRect().top);
+                this.coord.x = event.clientX;
+                this.coord.y = event.clientY;
             }
 
             // The actual function that will draw on event (mousemove)

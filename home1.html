@@ -163,10 +163,7 @@
                 
                 const imageX = document.createElement("img");
                 imageX.src = "https://meebrown.github.io/website/clickX.png";
-                imageX.id = "X";
-
-                var img = document.getElementById("X");
-                ctx.drawImage(img, (this.coord.x - 13), (this.coord.y - 13));
+                ctx.drawImage(imageX, (this.coord.x - 13), (this.coord.y - 13));
             }
 
             // Sets draw to false on event (mouseup)

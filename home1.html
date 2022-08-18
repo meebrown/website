@@ -74,7 +74,6 @@
     <script>
         var zindex = 15;
 
-
         var canvas = document.createElement("canvas");        
         canvas.className = 'canvases';
         canvas.id = 'sketchCanvas';
@@ -83,8 +82,6 @@
 
         var parentDiv = document.getElementById("editor-section");
         parentDiv.appendChild(canvas);
-
-
 
         /// get computed style for image
         var img = document.getElementById('editor');
@@ -98,8 +95,6 @@
         canvas.width = width;
         canvas.height = height;
 
-
-
         // Create a class for the canvas, including attributes for the id, // draw boolean, and coordinates
         class Canvas {
             constructor(canvas_id, draw, coord) {          
@@ -112,8 +107,8 @@
             startDrawing(event) {
                 this.draw = true;
                 let canvas = document.getElementById(this.canvas_id); 
-                this.coord.x = 100;
-                this.coord.y = 100;
+                this.coord.x = 0;
+                this.coord.y = 0;
             }
 
             // The actual function that will draw on event (mousemove)
@@ -161,6 +156,14 @@
                 ctx.stroke();
             }
 
+            drawSketch(event) {
+                // Select the canvas and get its context
+                let canvas = document.getElementById(this.canvas_id);
+                let ctx = canvas.getContext('2d');
+
+                ctx.fillText("x", this.coord.x, this.coord.y);
+            }
+
             // Sets draw to false on event (mouseup)
             //stopDrawing(event) {
             //    this.draw = true;
@@ -182,6 +185,10 @@
         //});
             document.addEventListener('mousemove', function(e){
                 canvas.drawSketch(e);
+            });
+
+            document.addEventListener('click', function(e){
+                canvas.drawX(e);
             });
         }
 

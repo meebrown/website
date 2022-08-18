@@ -149,15 +149,12 @@
                 // Specify where the line ends
                 ctx.lineTo(this.coord.x , this.coord.y);
                 
-                // Draw the line
-                ctx.arc(
-                    this.coord.x + Math.cos( Math.random() * Math.PI * 2 ) * radius * Math.random(),
-                    this.coord.y + Math.sin( Math.random() * Math.PI * 2 ) * radius * Math.random(),
-                        1,
-                        0, Math.PI * 2, false
-                    );
+                // Draw the line       
+                ctx.lineTo(this.coord.x + Math.random() * 20 - 10, this.coord.y + Math.random() * 20 - 10);              
                 ctx.stroke();
             }
+
+            };
             // Sets draw to false on event (mouseup)
             //stopDrawing(event) {
             //    this.draw = true;

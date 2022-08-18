@@ -107,8 +107,8 @@
             startDrawing(event) {
                 this.draw = true;
                 let canvas = document.getElementById(this.canvas_id); 
-                this.coord.x = 0;
-                this.coord.y = 0;
+                this.coord.x = (event.clientX - canvas.getBoundingClientRect().left);
+                this.coord.y = (event.clientY - canvas.getBoundingClientRect().top);
             }
 
             // The actual function that will draw on event (mousemove)
@@ -163,7 +163,7 @@
 
                 ctx.font = "30px Arial";
 
-                ctx.strokeText("x", 20, 20);
+                ctx.strokeText("x", this.coord.x, this.coord.y);
             }
 
             // Sets draw to false on event (mouseup)

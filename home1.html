@@ -167,10 +167,13 @@
                 const imageX = document.createElement("img");
                 imageX.src = "https://meebrown.github.io/website/clickX.png";
 
-                imageX.style.height = "5vh";
-                imageX.style.width = "5vh";
+                var cs = getComputedStyle(imageX);
+                var size = parseInt(cs.getPropertyValue('height'), 10);
 
-                ctx.drawImage(imageX, (this.coord.x - 13), (this.coord.y - 13));
+                imageX.style.height = (size/75);
+                imageX.style.width = (size/75);
+
+                ctx.drawImage(imageX, (this.coord.x - (size/150)), (this.coord.y - (size/150)));
             }
 
             // Sets draw to false on event (mouseup)

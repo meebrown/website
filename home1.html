@@ -149,8 +149,13 @@
                 // Specify where the line ends
                 ctx.lineTo(this.coord.x , this.coord.y);
                 
-                // Draw the line       
-                ctx.lineTo(this.coord.x + Math.random() * 200 - 10, this.coord.y + Math.random() * 200 - 10);              
+                // Draw the line
+                if (Math.random() < 0.5) {
+                    ctx.lineTo(this.coord.x + Math.random() * (width) - 10, this.coord.y + Math.random() * (width) - 10);
+                } else {
+                    ctx.lineTo(this.coord.x + Math.random() * -(width) - 10, this.coord.y + Math.random() * -(width) - 10);
+                }              
+                //ctx.lineTo(this.coord.x + Math.random() * (width) - 10, this.coord.y + Math.random() * 200 - 10);              
                 ctx.stroke();
             }
 

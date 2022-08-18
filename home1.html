@@ -183,7 +183,7 @@
         // Write the main function that will execute on load
         function main() {
             // Initialize the main object, canvas
-            let canvas = new Canvas("sketchCanvas", false, {x:0 , y:0});
+            let canvas = new Canvas("sketchCanvas", false, {x: event.clientX , y: event.clientY});
         
         // Add event listeners for the mousedown, mouseup, and 
         // mousemove. 

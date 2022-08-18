@@ -167,7 +167,8 @@
                 const imageX = document.createElement("img");
                 imageX.src = "https://meebrown.github.io/website/clickX.png";
 
-                var cs = getComputedStyle(imageX);
+                var screenHeight = document.getElementById('editor');
+                var cs = getComputedStyle(screenHeight);
                 var size = parseInt(cs.getPropertyValue('height'), 10);
 
                 imageX.style.height = (size/75);

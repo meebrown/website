@@ -8,8 +8,9 @@
         <div id="editor-section">  
             <div class="editable" id="editor">
                 <div id="imgs">
-                    <img id="img1" src='https://meebrown.github.io/website/SelfPortrait.jpg' alt="Self-Portrait (2021)">
-                    <img id="img2" src='https://meebrown.github.io/website/PostHuman.jpg' alt="Untitled (2022)">
+                    <img id="click" src='https://meebrown.github.io/website/clickX.png' alt="">
+                    <img id="img1" src='https://meebrown.github.io/website/SelfPortrait.jpg' alt="Self-Portrait (2021). A being careens through a blue atmosphere with red clouds.">
+                    <img id="img2" src='https://meebrown.github.io/website/PostHuman.jpg' alt="Untitled (2022). A pink creature video calls with a snake-like friend. The friend is using a dog filter over its face.">
                     <img id="img2" src='https://meebrown.github.io/website/placeholder.png' alt="">
                     <img id="img2" src='https://meebrown.github.io/website/placeholder.png' alt="">
                     <img id="img2" src='https://meebrown.github.io/website/placeholder.png' alt="">
@@ -164,8 +165,7 @@
                 let canvas = document.getElementById(this.canvas_id);
                 let ctx = canvas.getContext('2d');
 
-                const imageX = document.createElement("img");
-                imageX.src = "https://meebrown.github.io/website/clickX.png";
+                const imageX = document.getElementById("click");
 
                 var screenHeight = document.getElementById('editor');
                 var cs = getComputedStyle(screenHeight);

@@ -160,10 +160,13 @@
                 // Select the canvas and get its context
                 let canvas = document.getElementById(this.canvas_id);
                 let ctx = canvas.getContext('2d');
+                
+                const imageX = document.createElement("img");
+                imageX.src = "https://meebrown.github.io/website/clickX.png";
+                imageX.id = "X";
 
-                ctx.font = "30px Arial";
-
-                ctx.strokeText("x", this.coord.x, this.coord.y);
+                var img = document.getElementById("X");
+                ctx.drawImage(img, (this.coord.x - 13), (this.coord.y - 13));
             }
 
             // Sets draw to false on event (mouseup)

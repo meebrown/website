@@ -156,13 +156,21 @@
                 ctx.stroke();
             }
 
+
+            // Draws X on click
             drawX(event) {
                 // Select the canvas and get its context
                 let canvas = document.getElementById(this.canvas_id);
                 let ctx = canvas.getContext('2d');
                 
+                var width = parseInt(cs.getPropertyValue('height'), 10);
+
                 const imageX = document.createElement("img");
                 imageX.src = "https://meebrown.github.io/website/clickX.png";
+
+                imageX.style.height = (width / 75);
+                imageX.style.width = (width / 75);
+
                 ctx.drawImage(imageX, (this.coord.x - 13), (this.coord.y - 13));
             }
 

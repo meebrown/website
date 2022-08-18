@@ -139,6 +139,7 @@
                 ctx.strokeStyle = "black";
                 ctx.lineWidth = (width / 375);
                 ctx.lineCap = "rounded";
+
                 // Start moving to the coordinates determined by mouse 
                 // movement. The position is updated as the cursor moves
                 ctx.moveTo(this.coord.x, this.coord.y);
@@ -149,7 +150,13 @@
                 ctx.lineTo(this.coord.x , this.coord.y);
                 
                 // Draw the line
-                ctx.stroke();
+                ctx.arc(
+                    this.coord.x + Math.cos( Math.random() * Math.PI * 2 ) * radius * Math.random(),
+                    this.coord.y + Math.sin( Math.random() * Math.PI * 2 ) * radius * Math.random(),
+                        1,
+                        0, Math.PI * 2, false
+                    );
+                ctx.fill();
             }
             // Sets draw to false on event (mouseup)
             //stopDrawing(event) {

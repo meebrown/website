@@ -171,8 +171,8 @@
                 var cs = getComputedStyle(screenHeight);
                 var size = parseInt(cs.getPropertyValue('height'), 10);
 
-                imageX.height = (size/75);
-                imageX.width = (size/75);
+                imageX.height = "50px";
+                imageX.width = "300px";
 
                 ctx.drawImage(imageX, (this.coord.x - 13), (this.coord.y - 13));
             }

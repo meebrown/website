@@ -137,7 +137,7 @@
                 // controls. The line cap is hardcoded to be rounded,
                 // because it looks more natural for a drawing application
                 ctx.strokeStyle = "black";
-                ctx.lineWidth = (width / 600);
+                ctx.lineWidth = (width / 1000);
                 ctx.lineCap = "rounded";
 
                 // Start moving to the coordinates determined by mouse 
@@ -151,9 +151,9 @@
                 
                 //spikes
                 if (Math.random() < 0.5) {
-                    ctx.lineTo(this.coord.x + Math.random() * (width * 2) - 10, this.coord.y + Math.random() * (width * 2) - 10);
+                    ctx.lineTo(this.coord.x + Math.random() * (width * 3) - 10, this.coord.y + Math.random() * (width * 3) - 10);
                 } else {
-                    ctx.lineTo(this.coord.x + Math.random() * -(width) - 10, this.coord.y + Math.random() * -(width) - 10);
+                    ctx.lineTo(this.coord.x + Math.random() * -(width * 3) - 10, this.coord.y + Math.random() * -(width * 3) - 10);
                 }              
                 //ctx.lineTo(this.coord.x + Math.random() * (width) - 10, this.coord.y + Math.random() * 200 - 10);              
                 // Draw the line

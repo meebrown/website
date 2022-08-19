@@ -9,7 +9,7 @@
             <div class="editable" id="editor">
                 <div id="imgs">
                     <img id="img1" src='https://meebrown.github.io/website/SelfPortrait.jpg' onclick="on()" alt="Self-Portrait (2020). A being careens through a blue atmosphere with red clouds.">
-                    <img id="img2" src='https://meebrown.github.io/website/PostHuman.jpg' onclick="on()" alt="Untitled (2022). A pink creature video calls with a snake-like friend. The friend is using a dog filter over its face.">
+                    <img id="img2" src='https://meebrown.github.io/website/PostHuman.jpg' onclick="on1()" alt="Untitled (2022). A pink creature video calls with a snake-like friend. The friend is using a dog filter over its face.">
                     <img id="img2" src='https://meebrown.github.io/website/placeholder.png' alt="">
                     <img id="img2" src='https://meebrown.github.io/website/placeholder.png' alt="">
                     <img id="img2" src='https://meebrown.github.io/website/placeholder.png' alt="">
@@ -19,7 +19,7 @@
         <div id="img1overlay" onclick="off()">
             <img id="fullimg" src='https://meebrown.github.io/website/SelfPortrait.jpg' alt="Self-Portrait (2020). A being careens through a blue atmosphere with red clouds.">
         </div>
-        <div id="img2overlay" onclick="off()">
+        <div id="img2overlay" onclick="off1()">
             <img id="fullimg" src='https://meebrown.github.io/website/PostHuman.jpg' alt="Untitled (2022). A pink creature video calls with a snake-like friend. The friend is using a dog filter over its face.">
         </div>
         
@@ -256,7 +256,15 @@
             document.getElementById("img1overlay").style.display = "block";
         }
 
-            function off() {
+        function off() {
+            document.getElementById("img1overlay").style.display = "none";
+        }
+
+        function on1() {
+            document.getElementById("img1overlay").style.display = "block";
+        }
+
+        function off1() {
             document.getElementById("img1overlay").style.display = "none";
         }
 

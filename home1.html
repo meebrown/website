@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Matthew Brown</title>
     </head>
     <body>
-        <div id="sliver"></div>
         <div id="editor-section">  
             <div class="editable" id="editor">
                 <div id="imgs">
-                    <img id="img1" src='https://meebrown.github.io/website/SelfPortrait.jpg' alt="Self-Portrait (2021). A being careens through a blue atmosphere with red clouds.">
+                    <img id="img1" src='https://meebrown.github.io/website/SelfPortrait.jpg' onclick="on()" alt="Self-Portrait (2020). A being careens through a blue atmosphere with red clouds.">
                     <img id="img2" src='https://meebrown.github.io/website/PostHuman.jpg' alt="Untitled (2022). A pink creature video calls with a snake-like friend. The friend is using a dog filter over its face.">
                     <img id="img2" src='https://meebrown.github.io/website/placeholder.png' alt="">
                     <img id="img2" src='https://meebrown.github.io/website/placeholder.png' alt="">
                     <img id="img2" src='https://meebrown.github.io/website/placeholder.png' alt="">
                 </div>
             </div>
-        </div> 
+        </div>
+        <div id="img1overlay" onclick="off()">
+            <img id="portrait" src='https://meebrown.github.io/website/SelfPortrait.jpg' alt="Self-Portrait (2020). A being careens through a blue atmosphere with red clouds.">
+        </div>
         
     </body>
     <style>
@@ -70,6 +73,24 @@
             top: 0;
         }
 
+        #img1overlay {
+            position: fixed;
+            display: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 2;
+            cursor: url("https://meebrown.github.io/website/clickX.png") 13 13, auto;
+        }
+
+        #portrait{
+            position: absolute;
+            left: 50%;
+        }
     </style>
 
     <script>
@@ -158,7 +179,7 @@
             }
 
 
-            // Draws X on click
+            // Draws X on event
             drawX(event) {
                 // Select the canvas and get its context
                 let canvas = document.getElementById(this.canvas_id);
@@ -179,10 +200,10 @@
             //    this.draw = true;
             //}
         }
-        
+
         // Write the main function that will execute on load
         function main() {
-            // Initialize the main object, canvas
+            // Initialize the drawing canvas
             let canvas = new Canvas("sketchCanvas", false, {x: event.clientX , y: event.clientY});
         
         // Add event listeners for the mousedown, mouseup, and 
@@ -206,6 +227,14 @@
         window.addEventListener("DOMContentLoaded", ()=>{        
             main();
         });
+
+        function on() {
+            document.getElementById("img1overlay").style.display = "block";
+        }
+
+            function off() {
+            document.getElementById("img1overlay").style.display = "none";
+        }
 
     </script>
 </html>

@@ -18,9 +18,11 @@
         </div>
         <div id="img1overlay" onclick="off()">
             <img id="fullimg" src='https://meebrown.github.io/website/SelfPortrait.jpg' alt="Self-Portrait (2020). A being careens through a blue atmosphere with red clouds.">
+            <p>Self-Portrait (2020)<br>Made with GIMP</p>
         </div>
         <div id="img2overlay" onclick="off1()">
             <img id="fullimg" src='https://meebrown.github.io/website/PostHuman.jpg' alt="Untitled (2022). A pink creature video calls with a snake-like friend. The friend is using a dog filter over its face.">
+            <p id="fullimgp">Untitled (2022)<br>Made with Blender and GIMP</p>
         </div>
         
     </body>
@@ -99,7 +101,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0,0,0,0.5);
+            background-color: rgba(255, 255, 255);
             z-index: 20;
             cursor: url("https://meebrown.github.io/website/clickX.png") 13 13, auto;
         }
@@ -112,7 +114,14 @@
             margin-right: auto;
             width: auto;
             height: 70%;
-            margin-top: 5%;
+            margin-top: 3%;
+        }
+
+        #fullimgp{
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 80%;
         }
     </style>
 

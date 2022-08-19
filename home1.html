@@ -17,7 +17,7 @@
             </div>
         </div>
         <div id="img1overlay" onclick="off()">
-            <img id="portrait" src='https://meebrown.github.io/website/SelfPortrait.jpg' alt="Self-Portrait (2020). A being careens through a blue atmosphere with red clouds.">
+            <img id="fullimg" src='https://meebrown.github.io/website/SelfPortrait.jpg' alt="Self-Portrait (2020). A being careens through a blue atmosphere with red clouds.">
         </div>
         
     </body>
@@ -87,12 +87,17 @@
             cursor: url("https://meebrown.github.io/website/clickX.png") 13 13, auto;
         }
 
-        #portrait{
+        #fullimg{
             -webkit-filter: grayscale(0%); /* Safari 6.0 - 9.0 */
             filter: grayscale(0%);
             position: absolute;
-            height: 100%;
+            max-height: 100%;
+            max-width: 100%;
+            height: auto;
             width: auto;
+            margin-left: 10%;
+            margin-top: 10%;
+            margin-bottom: 10%;
         }
     </style>
 

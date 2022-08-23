@@ -28,9 +28,9 @@
 
         <div id="menuoverlay" onclick="off2()">
             <ul>
-                <li><p id ="menutext">Music</p></li>
-                <li><p id ="menutext">Writing</p></li>
-                <li><p id ="menutext">About</p></li>
+                <li><p id ="menutext"><span class="stretch">Music</span></p></li>
+                <li><p id ="menutext"><span class="stretch">Writing</span</p></li>
+                <li><p id ="menutext"><span class="stretch">About</span</p></li>
             </ul>
         </div>
         
@@ -177,6 +177,14 @@
 
         #menutext:hover {
             color: rgb(166, 239, 20);  
+        }
+
+        .stretch {
+            display: inline-block;
+            -webkit-transform: scale(2, 1);
+            -moz-transform: scale(2, 1);
+            -o-transform: scale(2, 1);
+            transform: scale(2, 1);
         }
     </style>
 

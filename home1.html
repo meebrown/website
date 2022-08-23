@@ -120,20 +120,6 @@
             cursor: url("https://meebrown.github.io/website/clickX.png") 13 13, auto;
         }
 
-        #menuoverlay {
-            position: fixed;
-            display: none;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(39, 39, 39, 0.75);
-            z-index: 20;
-            cursor: url("https://meebrown.github.io/website/clickX.png") 13 13, auto;
-        }
-
         #fullimg{
             -webkit-filter: grayscale(0%); /* Safari 6.0 - 9.0 */
             filter: grayscale(0%);
@@ -169,15 +155,30 @@
             margin-left: 20vh;
         }
 
+        #menuoverlay {
+            position: fixed;
+            display: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: transparent;
+            z-index: 20;
+            cursor: url("https://meebrown.github.io/website/clickX.png") 13 13, auto;
+        }
+
         #menutext {
             font-size: 20vh;
-            color:white;
+            color:transparent;
             margin: 0;
-            padding-top: 10vh;
+            padding-top: 2vh;
+            -webkit-text-stroke: 1px0.5vh black;
         }
 
         #menutext:hover {
-            color: rgb(226, 157, 226);  
+            color: rgb(0, 0, 0);  
         }
 
         .stretch {

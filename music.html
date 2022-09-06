@@ -39,12 +39,13 @@
           ctx = canvas.getContext("2d");
           anim_img = new Image(size_x, size_y);
           anim_img.onload = function() { setInterval('myAnimation()', 10); }
-          anim_img.src = 'https://pbs.twimg.com/profile_images/3352183391/a16302aab7bd8742ad3e39a75454008a_normal.jpeg';
+          anim_img.src = 'https://meebrown.github.io/website/soundcloud.png';
+          anim_img.alt = 'Link to my Soundcloud profile';
         }
         function myAnimation() {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
-         if (x_icon < 0 || x_icon > canvas.width - size_x) {stepX = -stepX; }
-         if (y_icon < 0 || y_icon > canvas.height - size_y) {stepY = -stepY; }
+         if (x_icon < 0 || x_icon > img.width - size_x) {stepX = -stepX; }
+         if (y_icon < 0 || y_icon > img.height - size_y) {stepY = -stepY; }
             x_icon += stepX;
             y_icon += stepY;
          ctx.drawImage(anim_img, x_icon, y_icon);

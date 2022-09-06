@@ -2,7 +2,9 @@
 <html lang="en">
 
     <body onload="draw();">
-        <canvas id="canvas" width="480" height="320" style="border:solid 1px;"></canvas>
+        <div id="editor">
+        <canvas id="canvas" style="border:solid 1px;"></canvas>
+        </div>
     </body>
 
     <script type="application/javascript">
@@ -13,9 +15,17 @@
         var stepY = 1;
         var size_x = 23;
         var size_y = 22;
-        var canvas_size_x = 480;
-        var canvas_size_y = 320;
         var anim_img = null;
+        var canvas = document.createElement("canvas");
+        /// get computed style for image
+        var img = document.getElementById('editor');
+        var cs = getComputedStyle(img);
+        /// these will return dimensions in *pixel* regardless of what
+        /// you originally specified for image:
+        var width = parseInt(cs.getPropertyValue('width'), 10);
+        var height = parseInt(cs.getPropertyValue('height'), 10);
+        canvas.width = width;
+        canvas.height = height;
         
         function draw() {
           var canvas = document.getElementById("canvas");
@@ -26,8 +36,8 @@
         }
         function myAnimation() {
           ctx.clearRect(0, 0, canvas_size_x, canvas_size_y);
-         if (x_icon < 0 || x_icon > canvas_size_x - size_x) {stepX = -stepX; }
-         if (y_icon < 0 || y_icon > canvas_size_y - size_y) {stepY = -stepY; }
+         if (x_icon < 0 || x_icon > canvas.width - size_x) {stepX = -stepX; }
+         if (y_icon < 0 || y_icon > canvas.height - size_y) {stepY = -stepY; }
             x_icon += stepX;
             y_icon += stepY;
          ctx.drawImage(anim_img, x_icon, y_icon);
@@ -41,6 +51,15 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
+        }
+
+        #editor {
+            width: 100vw;
+            height: 100vh;        
+            z-index: 10;  /* <- higher than your canvases if it needs to go on top */
+            position: absolute;
+            left: 0;
+            top: 0;
         }
     </style>
 </html>

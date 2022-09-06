@@ -3,7 +3,6 @@
 
     <body onload="draw();">
         <div id="editor">
-        <canvas id="canvas" style="border:solid 1px;"></canvas>
         </div>
     </body>
 
@@ -16,7 +15,15 @@
         var size_x = 23;
         var size_y = 22;
         var anim_img = null;
+
         var canvas = document.createElement("canvas");
+        canvas.id = 'canvas';
+        canvas.style.zIndex = zindex; 
+        zindex++;
+
+        var parentDiv = document.getElementById("editor");
+        parentDiv.appendChild(canvas);
+
         /// get computed style for image
         var img = document.getElementById('editor');
         var cs = getComputedStyle(img);

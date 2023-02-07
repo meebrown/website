@@ -5,6 +5,7 @@
         <title>Matthew Brown</title>
     </head>
     <body>
+        <div class="dropdownHolder">
         <div class="dropdown">
             <button class="dropbtn">Dropdown</button>
               <div class="dropdown-content">
@@ -12,6 +13,7 @@
                 <a href="#">Link 2</a>
                 <a href="#">Link 3</a>
               </div>
+        </div>
         </div>
         <div id="editor-section">  
             <div class="editable" id="editor">
@@ -156,7 +158,6 @@
           padding: 16px;
           font-size: 16px;
           border: none;
-          animation: y 7s linear infinite alternate;
         }
 
         @keyframes x {
@@ -169,6 +170,10 @@
           100% {
             transform: translateY( calc(100vh - 1vh) );
           }
+        }
+        
+        .dropdownHolder{
+            animation: y 7s linear infinite alternate;
         }
         
         .dropdown-content {

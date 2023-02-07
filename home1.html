@@ -4,10 +4,15 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Matthew Brown</title>
     </head>
-    <body onload="soundcloud()">
-        <!--<div id="soundc">
-            <a href="https://soundcloud.com/matfatcat/sets/clouds-at-breakfast" target="_blank" rel="noopener noreferrer"><img id="soundcicon" onclick="on2()" src="https://meebrown.github.io/website/soundcloud.png" alt="Link to Soundcloud"></a>
-        </div>-->
+    <body>
+        <div id="menuDiv">
+            <button class="dropbtn">Dropdown</button>
+              <div class="dropdown-content">
+                <a href="#">Link 1</a>
+                <a href="#">Link 2</a>
+                <a href="#">Link 3</a>
+              </div>
+        </div>
         <div id="editor-section">  
             <div class="editable" id="editor">
                 <div id="imgs">
@@ -18,11 +23,11 @@
         </div>
         <div id="img1overlay" onclick="off()">
             <img id="fullimg" src='https://meebrown.github.io/website/SelfPortrait.jpg' alt="Self-Portrait (2020). A being careens through a blue atmosphere with red clouds.">
-            <p id="fullimgp">Self-Portrait (2020)<br>Made in GIMP</p>
+            <p id="fullimgp">Self-Portrait (2020)<br>Made with GIMP</p>
         </div>
         <div id="img2overlay" onclick="off1()">
-            <img id="fullimg" src='https://meebrown.github.io/website/PostHuman.jpg' alt="Untitled (2022). A pink creature video calls with a snake-like friend. The friend is using a dog filter over its face.">
-            <p id="fullimgp">Untitled (2022)<br>Made in Blender and GIMP</p>
+            <img id="fullimg" src='https://meebrown.github.io/website/PostHuman.jpg' alt="Untitled (2022). A pink creature video calls with a snake-like friend. The friend is using a virtual dog filter over its face.">
+            <p id="fullimgp">Untitled (2022)<br>Made with Blender, GIMP, and Inkscape</p>
         </div>
     </body>
     <style>
@@ -36,13 +41,6 @@
             overflow: hidden;
             /*cursor: url("https://meebrown.github.io/website/cursor4.png") 13 13, auto;*/
             cursor: none;
-        }
-
-        #soundcicon {
-            height:8vh;
-            width:auto;
-            margin-top: 15vh;
-            margin-left: 8vh;
         }
 
         a {
@@ -146,10 +144,61 @@
             font-size: 2vh;
         }
 
-        #soundc {
+        #menuDiv {
             position: fixed;
             z-index: 16;
         }
+        
+        #menuDiv {
+          animation: x 13s linear infinite alternate;
+        }
+
+        .dropbtn {
+          animation: y 7s linear infinite alternate;
+          background-color: #04AA6D;
+          color: white;
+          padding: 16px;
+          font-size: 16px;
+          border: none;
+        }
+
+        @keyframes x {
+          100% {
+            transform: translateX( calc(100vw - #{$size}) );
+          }
+        }
+
+        @keyframes y {
+          100% {
+            transform: translateY( calc(100vh - #{$size}) );
+          }
+        }
+        
+        .dropdown-content {
+          display: none;
+          position: absolute;
+          background-color: #f1f1f1;
+          min-width: 160px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+        }
+        
+        /* Links inside the dropdown */
+        .dropdown-content a {
+          color: black;
+          padding: 12px 16px;
+          text-decoration: none;
+          display: block;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {background-color: #ddd;}
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {display: block;}
+
+        /* Change the background color of the dropdown button when the dropdown content is shown */
+        .dropdown:hover .dropbtn {background-color: #3e8e41;}
 
     </style>
 
@@ -310,10 +359,6 @@
 
         function off2() {
             document.getElementById("soundcoverlay").style.display = "none";
-        }
-
-        function soundcloud() {
-
         }
 
     </script>

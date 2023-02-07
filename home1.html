@@ -5,15 +5,13 @@
         <title>Matthew Brown</title>
     </head>
     <body>
-        <div class="dropdownHolder">
         <div class="dropdown">
-            <button class="dropbtn">Dropdown</button>
+            <button class="dropbtn">@</button>
               <div class="dropdown-content">
-                <a href="#">Link 1</a>
+                <!--<a href="#">Link 1</a>
                 <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
+                <a href="#">Link 3</a> -->
               </div>
-        </div>
         </div>
         <div id="editor-section">  
             <div class="editable" id="editor">
@@ -153,11 +151,10 @@
         }
         
         .dropbtn {
-          background-color: #04AA6D;
-          color: white;
           padding: 16px;
           font-size: 16px;
           border: none;
+          animation: y 7s linear infinite alternate;
         }
 
         @keyframes x {
@@ -172,18 +169,13 @@
           }
         }
         
-        .dropdownHolder{
-            animation: y 7s linear infinite alternate;
-            z-index: 14;
-        }
-        
         .dropdown-content {
           display: none;
           position: absolute;
           background-color: #f1f1f1;
           min-width: 160px;
           box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-          z-index: 14;
+          z-index: 16;
         }
         
         /* Links inside the dropdown */

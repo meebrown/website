@@ -5,7 +5,7 @@
         <title>Matthew Brown</title>
     </head>
     <body>
-        <div id="menuDiv">
+        <div class="dropdown">
             <button class="dropbtn">Dropdown</button>
               <div class="dropdown-content">
                 <a href="#">Link 1</a>
@@ -144,9 +144,10 @@
             font-size: 2vh;
         }
 
-        #menuDiv {
+        .dropdown {
             position: fixed;
-            z-index: 16;
+            z-index: 14;
+            animation: x 13s linear infinite alternate;
         }
         
         #menuDiv {
@@ -162,7 +163,7 @@
           border: none;
         }
 
-        /*@keyframes x {
+        @keyframes x {
           100% {
             transform: translateX( calc(100vw - #{$size}) );
           }
@@ -172,7 +173,7 @@
           100% {
             transform: translateY( calc(100vh - #{$size}) );
           }
-        } */
+        }
         
         .dropdown-content {
           display: none;

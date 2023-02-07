@@ -145,16 +145,18 @@
         }
 
         #menuDiv {
+            width: 100vw;
+            height: 100vh;
             position: fixed;
             z-index: 16;
         }
         
         #menuDiv {
-          animation: x 13s linear infinite alternate;
+          /*animation: x 13s linear infinite alternate;*/
         }
 
         .dropbtn {
-          animation: y 7s linear infinite alternate;
+          /*animation: y 7s linear infinite alternate; */
           background-color: #04AA6D;
           color: white;
           padding: 16px;
@@ -162,7 +164,7 @@
           border: none;
         }
 
-        @keyframes x {
+        /*@keyframes x {
           100% {
             transform: translateX( calc(100vw - #{$size}) );
           }
@@ -172,7 +174,7 @@
           100% {
             transform: translateY( calc(100vh - #{$size}) );
           }
-        }
+        } */
         
         .dropdown-content {
           display: none;

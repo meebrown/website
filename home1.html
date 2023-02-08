@@ -13,6 +13,9 @@
                 <a href="#">Link 3</a> -->
               </div>
         </div>
+        <div class="about" onclick="abouton()">
+            <button class="aboutbtn">About</button>
+        </div>
         <div class="shadow1" onclick="abouton()">
             <button class="shadow1btn">?</button>
         </div>
@@ -207,6 +210,20 @@
           line-height: 6vh;
         }
         
+        .about {
+            position: fixed;
+            z-index: 23;
+            animation: x 24s linear infinite alternate;
+            cursor: none;
+            display: none;
+        }
+        
+        .aboutbtn {
+            animation: y 18s linear infinite alternate;
+            display: none;
+            cursor: none;
+        }
+        
         .shadow1 {
             position: fixed;
             z-index: 21;
@@ -372,6 +389,10 @@
             width: 12vh;
             line-height: 6vh;
             background-color: yellow;
+        }
+        
+        .dropdown:hover + .about {
+            display: block;
         }
 
     </style>

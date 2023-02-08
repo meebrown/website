@@ -13,14 +13,17 @@
                 <a href="#">Link 3</a> -->
               </div>
         </div>
-        <div class="shadow1">
+        <div class="shadow1" onclick="abouton()">
             <button class="shadow1btn">?</button>
         </div>
-        <div class="shadow2">
+        <div class="shadow2" onclick="abouton()">
             <button class="shadow2btn">?</button>
         </div>
-        <div class="shadow3">
+        <div class="shadow3" onclick="abouton()">
             <button class="shadow3btn">?</button>
+        </div>
+        <div class="shadow4" onclick="abouton()">
+            <button class="shadow4btn">?</button>
         </div>
         <div id="editor-section">  
             <div class="editable" id="editor">
@@ -261,6 +264,27 @@
           -webkit-transform-origin: center center;
           border: none;
           animation-delay: 60ms;
+        }
+        
+        .shadow4 {
+            position: fixed;
+            z-index: 21;
+            animation: x 20s linear infinite alternate;
+            cursor: none;
+            -webkit-transform-origin: center center;
+            border: none;
+            animation-delay: 80ms;
+        }
+        
+        .shadow4btn {
+          font-size: 10vh;
+          opacity: 0.05;
+          animation: y 13s linear infinite alternate;
+          background-color: transparent;
+          cursor: none;
+          -webkit-transform-origin: center center;
+          border: none;
+          animation-delay: 80ms;
         }
         
         #spin {

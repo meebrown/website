@@ -22,7 +22,7 @@
             </div>
         </div>
         <div id="aboutoverlay" onclick="aboutoff()">
-            <p id="fullimgp">Matthew Brown<br>meeb1998@gmail.com</p>
+            <p id="aboutp">Matthew Brown<br>meeb1998@gmail.com</p>
         </div>
         <div id="img1overlay" onclick="off()">
             <img id="fullimg" src='https://meebrown.github.io/website/SelfPortrait.jpg' alt="Self-Portrait (2020). A being careens through a blue atmosphere with red clouds.">
@@ -160,6 +160,16 @@
             text-align: center;
             font-size: 2vh;
         }
+        
+        #aboutp {
+            display: block;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-size: 2vh;
+        }
 
         .dropdown {
             position: fixed;
@@ -214,6 +224,7 @@
 
         /* Change the background color of the dropdown button when the dropdown content is shown */
         .dropdown:hover .dropbtn {
+            color: white;
             cursor: none;
             background-color:rgba(0, 0, 0, .5);
             border-radius: 1vh;

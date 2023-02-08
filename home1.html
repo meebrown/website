@@ -5,7 +5,6 @@
         <title>Matthew Brown</title>
     </head>
     <body>
-        <div id="spin"
         <div class="dropdown">
             <button class="dropbtn" onclick="abouton()">?</button>
               <div class="dropdown-content">
@@ -13,7 +12,6 @@
                 <a href="#">Link 2</a>
                 <a href="#">Link 3</a> -->
               </div>
-        </div>
         </div>
         <div id="editor-section">  
             <div class="editable" id="editor">
@@ -200,7 +198,7 @@
 
         @keyframes x {
           75% {
-            transform: translateX( calc(96vw - 0.5vw) );
+            transform: translateX( calc(96vw - 0.5vw) )  transform:rotate(5400deg);
           }
         }
 
@@ -210,14 +208,14 @@
           }
         }
         
-        @keyframes spin {
+        /*@keyframes spin {
             from {
                 transform:rotate(0deg);
             }
             to {
-                transform:rotate(360deg);
+                ;
             }
-        }
+        }*/
         
         /*.dropdown-content {
           display: none;

@@ -310,7 +310,7 @@
                 // controls. The line cap is hardcoded to be rounded,
                 // because it looks more natural for a drawing application
                 ctx.strokeStyle = "black";
-                ctx.lineWidth = (width / 300);
+                ctx.lineWidth = (width / 250);
                 ctx.lineCap = "rounded";
 
                 // Start moving to the coordinates determined by mouse 
@@ -348,7 +348,7 @@
                 const imageX = document.createElement("img");
                 imageX.src = "https://meebrown.github.io/website/clickX.png";
 
-                ctx.drawImage(imageX, (this.coord.x - (size/80)), (this.coord.y - (size/80)), (size/40), (size/40));
+                ctx.drawImage(imageX, (this.coord.x - (size/70)), (this.coord.y - (size/70)), (size/35), (size/35));
             }
 
             // Sets draw to false on event (mouseup)

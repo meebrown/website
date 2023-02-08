@@ -192,6 +192,12 @@
         @keyframes x {
           75% {
             transform: translateX( calc(96vw - 1.2vw) );
+            from {
+                    transform:rotate(0deg);
+                }
+                to {
+                    transform:rotate(360deg);
+                }
           }
         }
 
@@ -263,7 +269,7 @@
             constructor(canvas_id, draw, coord) {          
                 this.canvas_id = canvas_id; 
                 this.draw = draw;
-                this.coord = coord
+                this.coord = coord;
             }
         
             // Sets draw to true and gets the mouse coordinates on the event

@@ -5,6 +5,7 @@
         <title>Matthew Brown</title>
     </head>
     <body>
+        <div id="spin"
         <div class="dropdown">
             <button class="dropbtn" onclick="abouton()">?</button>
               <div class="dropdown-content">
@@ -12,6 +13,7 @@
                 <a href="#">Link 2</a>
                 <a href="#">Link 3</a> -->
               </div>
+        </div>
         </div>
         <div id="editor-section">  
             <div class="editable" id="editor">
@@ -176,7 +178,7 @@
         .dropdown {
             position: fixed;
             z-index: 21;
-            animation: x 14s linear infinite alternate;
+            animation: x 16s linear infinite alternate;
             cursor: none;
         }
         
@@ -186,26 +188,27 @@
           -webkit-text-stroke-width: 2vh;
           -webkit-text-stroke-color: (0, 0, 0, .5);
           border: none;
-          animation: y 8s linear infinite alternate;
+          animation: y 9s linear infinite alternate;
           background-color: transparent;
           cursor: none;
-          animation-name: spin;
-          animation-duration: 5000ms;
-          animation-iteration-count: infinite;
-          animation-timing-function: linear;
+        }
+        
+        #spin {
+            animation-name: spin;
+            animation-duration: 5000ms;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
         }
 
         @keyframes x {
           75% {
             transform: translateX( calc(96vw - 0.5vw) );
-            transform: translateY( calc(90vh - 0.5vh) );
           }
         }
 
         @keyframes y {
           75% {
             transform: translateY( calc(90vh - 0.5vh) );
-            transform: translateX( calc(96vw - 0.5vw) );
           }
         }
         

@@ -16,17 +16,19 @@
         <!--<div class="about" onclick="abouton()">
             <button class="aboutbtn">About</button>
         </div>-->
-        <div class="shadow1" onclick="abouton()">
-            <button class="shadow1btn">?</button>
-        </div>
-        <div class="shadow2" onclick="abouton()">
-            <button class="shadow2btn">?</button>
-        </div>
-        <div class="shadow3" onclick="abouton()">
-            <button class="shadow3btn">?</button>
-        </div>
-        <div class="shadow4" onclick="abouton()">
-            <button class="shadow4btn">?</button>
+        <div class="shadows">
+            <div class="shadow1" onclick="abouton()">
+                <button class="shadow1btn">?</button>
+            </div>
+            <div class="shadow2" onclick="abouton()">
+                <button class="shadow2btn">?</button>
+            </div>
+            <div class="shadow3" onclick="abouton()">
+                <button class="shadow3btn">?</button>
+            </div>
+            <div class="shadow4" onclick="abouton()">
+                <button class="shadow4btn">?</button>
+            </div>
         </div>
         <div id="editor-section">  
             <div class="editable" id="editor">
@@ -191,7 +193,7 @@
         .dropdown {
             position: fixed;
             z-index: 22;
-            animation: x 24s linear infinite alternate;
+            animation: x 28s linear infinite alternate;
             cursor: none;
             -webkit-transform-origin: center center;
             border: none;
@@ -199,7 +201,7 @@
         
         .dropbtn {
           font-size: 10vh;
-          animation: y 18s linear infinite alternate;
+          animation: y 22s linear infinite alternate;
           background-color: transparent;
           cursor: none;
           -webkit-transform-origin: center center;
@@ -228,7 +230,7 @@
         .shadow1 {
             position: fixed;
             z-index: 21;
-            animation: x 24s linear infinite alternate;
+            animation: x 28s linear infinite alternate;
             cursor: none;
             -webkit-transform-origin: center center;
             border: none;
@@ -238,7 +240,7 @@
         .shadow1btn {
           font-size: 10vh;
           opacity: 0.4;
-          animation: y 18s linear infinite alternate;
+          animation: y 22s linear infinite alternate;
           background-color: transparent;
           cursor: none;
           -webkit-transform-origin: center center;
@@ -253,7 +255,7 @@
         .shadow2 {
             position: fixed;
             z-index: 21;
-            animation: x 24s linear infinite alternate;
+            animation: x 28s linear infinite alternate;
             cursor: none;
             -webkit-transform-origin: center center;
             border: none;
@@ -263,7 +265,7 @@
         .shadow2btn {
           font-size: 10vh;
           opacity: 0.2;
-          animation: y 18s linear infinite alternate;
+          animation: y 22s linear infinite alternate;
           background-color: transparent;
           cursor: none;
           -webkit-transform-origin: center center;
@@ -278,7 +280,7 @@
         .shadow3 {
             position: fixed;
             z-index: 21;
-            animation: x 24s linear infinite alternate;
+            animation: x 28s linear infinite alternate;
             cursor: none;
             -webkit-transform-origin: center center;
             border: none;
@@ -288,7 +290,7 @@
         .shadow3btn {
           font-size: 10vh;
           opacity: 0.1;
-          animation: y 18s linear infinite alternate;
+          animation: y 22s linear infinite alternate;
           background-color: transparent;
           cursor: none;
           -webkit-transform-origin: center center;
@@ -303,7 +305,7 @@
         .shadow4 {
             position: fixed;
             z-index: 21;
-            animation: x 24s linear infinite alternate;
+            animation: x 28s linear infinite alternate;
             cursor: none;
             -webkit-transform-origin: center center;
             border: none;
@@ -313,7 +315,7 @@
         .shadow4btn {
           font-size: 10vh;
           opacity: 0.05;
-          animation: y 18s linear infinite alternate;
+          animation: y 22s linear infinite alternate;
           background-color: transparent;
           cursor: none;
           -webkit-transform-origin: center center;
@@ -364,22 +366,7 @@
             color: blue;
         }
         
-        .dropdown:hover .shadow1btn {
-            cursor: none;
-            color: blue;
-        }
-        
-        .dropdown:hover .shadow2btn {
-            cursor: none;
-            color: blue;
-        }
-        
-        .dropdown:hover .shadow3btn {
-            cursor: none;
-            color: blue;
-        }
-        
-        .dropdown:hover .shadow4btn {
+        .shadows:hover {
             cursor: none;
             color: blue;
         }

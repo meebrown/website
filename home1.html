@@ -311,7 +311,7 @@
                 // because it looks more natural for a drawing application
                 ctx.strokeStyle = "black";
                 ctx.lineWidth = (width / 200);
-                ctx.lineCap = "rounded";
+                ctx.lineCap = "round";
                 ctx.lineJoin = 'round';
 
                 // Start moving to the coordinates determined by mouse 
@@ -349,7 +349,7 @@
                 const imageX = document.createElement("img");
                 imageX.src = "https://meebrown.github.io/website/clickX.png";
 
-                ctx.drawImage(imageX, (this.coord.x - (size/50)), (this.coord.y - (size/50)), (size/25), (size/25));
+                ctx.drawImage(imageX, (this.coord.x - (size/52)), (this.coord.y - (size/52)), (size/26), (size/26));
             }
 
             // Sets draw to false on event (mouseup)

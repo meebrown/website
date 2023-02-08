@@ -13,6 +13,9 @@
                 <a href="#">Link 3</a> -->
               </div>
         </div>
+        <div class="shadow1">
+            <button class="shadow1btn">?</button>
+        </div>
         <div id="editor-section">  
             <div class="editable" id="editor">
                 <div id="imgs">
@@ -189,6 +192,27 @@
           cursor: none;
           -webkit-transform-origin: center center;
           border: none;
+        }
+        
+        .shadow1 {
+            position: fixed;
+            z-index: 21;
+            animation: x 20s linear infinite alternate;
+            cursor: none;
+            -webkit-transform-origin: center center;
+            border: none;
+            animation-delay: 500ms;
+        }
+        
+        .shadow1btn {
+          font-size: 7vh;
+          opacity: 0.5;
+          animation: y 13s linear infinite alternate;
+          background-color: transparent;
+          cursor: none;
+          -webkit-transform-origin: center center;
+          border: none;
+          animation-delay: 500ms;
         }
         
         #spin {

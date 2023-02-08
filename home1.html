@@ -16,6 +16,12 @@
         <div class="shadow1">
             <button class="shadow1btn">?</button>
         </div>
+        <div class="shadow2">
+            <button class="shadow2btn">?</button>
+        </div>
+        <div class="shadow3">
+            <button class="shadow3btn">?</button>
+        </div>
         <div id="editor-section">  
             <div class="editable" id="editor">
                 <div id="imgs">
@@ -201,7 +207,7 @@
             cursor: none;
             -webkit-transform-origin: center center;
             border: none;
-            animation-delay: 2ms;
+            animation-delay: 20ms;
         }
         
         .shadow1btn {
@@ -212,7 +218,49 @@
           cursor: none;
           -webkit-transform-origin: center center;
           border: none;
-          animation-delay: 2ms;
+          animation-delay: 20ms;
+        }
+        
+        .shadow2 {
+            position: fixed;
+            z-index: 21;
+            animation: x 20s linear infinite alternate;
+            cursor: none;
+            -webkit-transform-origin: center center;
+            border: none;
+            animation-delay: 40ms;
+        }
+        
+        .shadow2btn {
+          font-size: 10vh;
+          opacity: 0.25;
+          animation: y 13s linear infinite alternate;
+          background-color: transparent;
+          cursor: none;
+          -webkit-transform-origin: center center;
+          border: none;
+          animation-delay: 40ms;
+        }
+        
+        .shadow3 {
+            position: fixed;
+            z-index: 21;
+            animation: x 20s linear infinite alternate;
+            cursor: none;
+            -webkit-transform-origin: center center;
+            border: none;
+            animation-delay: 60ms;
+        }
+        
+        .shadow3btn {
+          font-size: 10vh;
+          opacity: 0.1;
+          animation: y 13s linear infinite alternate;
+          background-color: transparent;
+          cursor: none;
+          -webkit-transform-origin: center center;
+          border: none;
+          animation-delay: 60ms;
         }
         
         #spin {

@@ -185,8 +185,6 @@
         .dropbtn {
           padding: 2vh;
           font-size: 6vh;
-          -webkit-text-stroke-width: 2vh;
-          -webkit-text-stroke-color: (0, 0, 0, .5);
           border: none;
           animation: y 9s linear infinite alternate;
           background-color: transparent;
@@ -246,10 +244,9 @@
 
         /* Change the background color of the dropdown button when the dropdown content is shown */
         .dropdown:hover .dropbtn {
-            color: white;
             cursor: none;
-            background-color:rgba(0, 0, 0, .5);
-            border-radius: 1vh;
+            -webkit-text-stroke-width: 2vh;
+            -webkit-text-stroke-color: (0, 0, 0, .5);
         }
 
     </style>

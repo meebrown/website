@@ -6,7 +6,7 @@
     </head>
     <body>
         <div class="dropdown">
-            <button class="dropbtn">?</button>
+            <button class="dropbtn" onclick="abouton()">?</button>
               <div class="dropdown-content">
                 <!--<a href="#">Link 1</a>
                 <a href="#">Link 2</a>
@@ -20,6 +20,9 @@
                     <img id="img2" class="mainimgs" src='https://meebrown.github.io/website/PostHuman.jpg' onclick="on1()" alt="Untitled (2022). A pink creature video calls with a snake-like friend. The friend is using a dog filter over its face.">
                 </div>
             </div>
+        </div>
+        <div id="aboutoverlay" onclick="aboutoff()">
+            <p id="fullimgp">Matthew Brown<br>meeb1998@gmail.com</p>
         </div>
         <div id="img1overlay" onclick="off()">
             <img id="fullimg" src='https://meebrown.github.io/website/SelfPortrait.jpg' alt="Self-Portrait (2020). A being careens through a blue atmosphere with red clouds.">
@@ -110,6 +113,20 @@
         }
 
         #img2overlay {
+            position: fixed;
+            display: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255);
+            z-index: 20;
+            cursor: url("https://meebrown.github.io/website/clickX.png") 13 13, auto;
+        }
+        
+        #aboutoverlay {
             position: fixed;
             display: none;
             width: 100%;
@@ -332,7 +349,15 @@
         window.addEventListener("DOMContentLoaded", ()=>{        
             main();
         });
+        
+        function abouton() {
+            document.getElementById("aboutoverlay").style.display = "block";
+        }
 
+        function aboutoff() {
+            document.getElementById("aboutoverlay").style.display = "none";
+        }
+        
         function on() {
             document.getElementById("img1overlay").style.display = "block";
         }

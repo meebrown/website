@@ -5,28 +5,30 @@
         <title>Matthew Brown</title>
     </head>
     <body>
-        <div class="dropdown">
-            <button class="dropbtn" onclick="abouton()">?</button>
-              <div class="dropdown-content">
-                <!--<a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a> -->
-              </div>
-        </div>
-        <!--<div class="about" onclick="abouton()">
-            <button class="aboutbtn">About</button>
-        </div>-->
-        <div class="shadow1" onclick="abouton()">
-            <button class="shadow1btn">?</button>
-        </div>
-        <div class="shadow2" onclick="abouton()">
-            <button class="shadow2btn">?</button>
-        </div>
-        <div class="shadow3" onclick="abouton()">
-            <button class="shadow3btn">?</button>
-        </div>
-        <div class="shadow4" onclick="abouton()">
-            <button class="shadow4btn">?</button>
+        <div class="qmks" onclick="abouton()">
+            <div class="dropdown">
+                <button class="dropbtn" onclick="abouton()">?</button>
+                  <div class="dropdown-content">
+                    <!--<a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a> -->
+                  </div>
+            </div>
+            <!--<div class="about" onclick="abouton()">
+                <button class="aboutbtn">About</button>
+            </div>-->
+            <div class="shadow1" onclick="abouton()">
+                <button class="shadow1btn">?</button>
+            </div>
+            <div class="shadow2" onclick="abouton()">
+                <button class="shadow2btn">?</button>
+            </div>
+            <div class="shadow3" onclick="abouton()">
+                <button class="shadow3btn">?</button>
+            </div>
+            <div class="shadow4" onclick="abouton()">
+                <button class="shadow4btn">?</button>
+            </div>
         </div>
         <div id="editor-section">  
             <div class="editable" id="editor">
@@ -227,7 +229,7 @@
         
         .shadow1 {
             position: fixed;
-            z-index: 21;
+            z-index: 0;
             animation: x 28s linear infinite alternate;
             cursor: none;
             -webkit-transform-origin: center center;
@@ -248,11 +250,12 @@
           height: 12vh;
           width: 12vh;
           line-height: 6vh;
+          z-index: 21;
         }
         
         .shadow2 {
             position: fixed;
-            z-index: 21;
+            z-index: 0;
             animation: x 28s linear infinite alternate;
             cursor: none;
             -webkit-transform-origin: center center;
@@ -273,6 +276,7 @@
           height: 12vh;
           width: 12vh;
           line-height: 6vh;
+          z-index: 21;
         }
         
         .shadow3 {
@@ -359,17 +363,17 @@
           }
         }*/
         
-        .dropdown:hover .dropbtn {
+        .dropbtn:hover {
             cursor: none;
             color: #3853ff;
         }
         
-        .dropdown:hover ~ .shadow1btn {
+        /*.dropbtn:hover ~ .shadow1btn {
             cursor: none;
             color: #3853ff;
         }
         
-        .dropdown:hover ~ .shadow2btn {
+        .dropbtn:hover ~ .shadow2btn {
             cursor: none;
             color: #3853ff;
         }
@@ -379,10 +383,10 @@
             color: #3853ff;
         }
         
-        .dropdown:hover ~ .shadow4btn {
+        .dropbtn:hover ~ .shadow4btn {
             cursor: none;
             color: #3853ff;
-        }
+        }*/
         
         /*.about:hover .aboutbtn {
             cursor: none;

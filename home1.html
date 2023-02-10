@@ -4,7 +4,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Matthew Brown</title>
     </head>
-    <body>
+    <body onload="document.body.style.opacity='1'">
         <div class="qmks" onclick="abouton()">
             <div class="dropdown">
                 <button class="dropbtn" onclick="abouton()">?</button>
@@ -53,6 +53,8 @@
             padding: 0;
             overflow: hidden;
             cursor: none;
+            opacity: 0;
+            transition: opacity 3s;
         }
 
         a {

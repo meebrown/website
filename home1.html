@@ -8,7 +8,7 @@
         <div class="qmks" onclick="abouton()">
             <div class="dropdown">
                 <button class="dropbtn" onclick="abouton()">?</button>
-                <p class="aboutp"><br>About</p>
+                <button class="aboutword" onclick="abouton()">About</button>
             </div>
             <div class="shadow1" onclick="abouton()">
                 <button class="shadow1btn">?</button>
@@ -171,7 +171,7 @@
             font-size: 2vh;
         }
         
-        #aboutp {
+        #about {
             margin: 0;
             position: absolute;
             display: block;
@@ -180,10 +180,6 @@
             -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
             text-align: center;
-            font-size: 0.75vh;
-            opacity: 0;
-            cursor: none;
-            animation: yabout 18s linear infinite alternate;
         }
 
         .dropdown {
@@ -207,6 +203,14 @@
           width: 12vh;
           line-height: 6vh;
           opacity: 0.25;
+        }
+        
+        .aboutword {
+            animation: yabout 22s linear infinite alternate;
+            font-size: 0.75vh;
+            opacity: 0;
+            cursor: none;
+            text-align: center;
         }
         
         .shadow1 {
@@ -348,7 +352,7 @@
             opacity: 1;
         }
         
-        .dropbtn:hover ~ .aboutp {
+        .dropbtn:hover ~ .aboutword {
             cursor: none;
             opacity: 1;
         }

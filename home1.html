@@ -3,20 +3,14 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Matthew Brown</title>
+        <link rel="stylesheet" href="website.css">
     </head>
     <body>
         <div class="qmks" onclick="abouton()">
             <div class="dropdown">
                 <button class="dropbtn" onclick="abouton()">?</button>
-                  <div class="dropdown-content">
-                    <!--<a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a> -->
-                  </div>
+                <p class="aboutp"><br>About</p>
             </div>
-            <!--<div class="about" onclick="abouton()">
-                <button class="aboutbtn">About</button>
-            </div>-->
             <div class="shadow1" onclick="abouton()">
                 <button class="shadow1btn">?</button>
             </div>
@@ -187,7 +181,9 @@
             -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
             text-align: center;
-            font-size: 2vh;
+            font-size: 1vh;
+            opacity: 0;
+            cursor: none;
         }
 
         .dropdown {
@@ -213,20 +209,13 @@
           opacity: 0.25;
         }
         
-        /*.about {
-            position: fixed;
-            z-index: 23;
-            animation: x 24s linear infinite alternate;
-            cursor: none;
-        }
-        
         .aboutbtn {
             animation: yabout 18s linear infinite alternate;
             background-color: white;
             font-size: 5vh;
             cursor: none;
             border: none;
-        }*/
+        }
         
         .shadow1 {
             position: fixed;
@@ -353,7 +342,21 @@
           }
         }
         
+        @keyframes yabout {
+          75% {
+              transform: translateY(calc(90vh - 0.5vh));
+          }
+          100% {
+              transform:;
+          }
+        }
+        
         .dropbtn:hover {
+            cursor: none;
+            opacity: 1;
+        }
+        
+        .dropbtn:hover + .aboutp {
             cursor: none;
             opacity: 1;
         }
@@ -424,7 +427,6 @@
                 ctx.lineWidth = (width / 200);
                 ctx.lineCap = "round";
                 ctx.lineJoin = 'round';
-                ctx.globalAlpha = 0.4;
 
                 // Start moving to the coordinates determined by mouse 
                 // movement. The position is updated as the cursor moves
@@ -512,14 +514,6 @@
         function off1() {
             document.getElementById("img2overlay").style.display = "none";
         }
-
-        function on2() {
-            document.getElementById("soundcoverlay").style.display = "block";
-        }
-
-        function off2() {
-            document.getElementById("soundcoverlay").style.display = "none";
-        }
-
+        
     </script>
 </html>

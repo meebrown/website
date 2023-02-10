@@ -181,9 +181,10 @@
             -ms-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
             text-align: center;
-            font-size: 1vh;
+            font-size: 0.75vh;
             opacity: 0;
             cursor: none;
+            animation: yabout 18s linear infinite alternate;
         }
 
         .dropdown {
@@ -207,14 +208,6 @@
           width: 12vh;
           line-height: 6vh;
           opacity: 0.25;
-        }
-        
-        .aboutbtn {
-            animation: yabout 18s linear infinite alternate;
-            background-color: white;
-            font-size: 5vh;
-            cursor: none;
-            border: none;
         }
         
         .shadow1 {
@@ -356,7 +349,7 @@
             opacity: 1;
         }
         
-        .dropbtn:hover + .aboutp {
+        .dropbtn:hover ~ .aboutp {
             cursor: none;
             opacity: 1;
         }

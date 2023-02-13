@@ -1,126 +1,401 @@
 <!DOCTYPE html>
 <html lang="en">
-    <body>
-        <!--<a href="javascript:void(0)" >Self-portrait (2020)</a>-->      
-        <canvas id = "sketchCanvas" width = "5000" height = "5000"></canvas>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Matthew Brown</title>
+    </head>
+    <body onload="document.body.style.opacity='1'">
+        <div class="qmks" onclick="abouton()">
+            <div class="dropdown">
+                <button class="dropbtn" onclick="abouton()">?</button>
+                <button class="aboutword" onclick="abouton()">About</button>
+            </div>
+            <div class="shadow1" onclick="abouton()">
+                <button class="shadow1btn">?</button>
+            </div>
+            <div class="shadow2" onclick="abouton()">
+                <button class="shadow2btn">?</button>
+            </div>
+            <div class="shadow3" onclick="abouton()">
+                <button class="shadow3btn">?</button>
+            </div>
+            <div class="shadow4" onclick="abouton()">
+                <button class="shadow4btn">?</button>
+            </div>
+        </div>
+        <div id="editor-section">
+            <div class="editable" id="editor">
+                <div id="imgs">
+                    <img id="img1" class="mainimgs" src='https://meebrown.github.io/website/SelfPortrait.jpg' onclick="on()" alt="Self-Portrait (2020). A being careens through a blue atmosphere with red clouds.">
+                    <img id="img2" class="mainimgs" src='https://meebrown.github.io/website/PostHuman.jpg' onclick="on1()" alt="Untitled (2022). A pink creature video calls with a snake-like friend. The friend is using a dog filter over its face.">
+                </div>
+            </div>
+        </div>
+        <div id="aboutoverlay" onclick="aboutoff()">
+            <p id="aboutp">Matthew Brown<br><br>Email: <a href="mailto:meeb1998@gmail.com">meeb1998@gmail.com</a><br>Instagram: <a href="https://www.instagram.com/mattheweebrown/">@mattheweebrown</a></p>
+        </div>
+        <div id="img1overlay" onclick="off()">
+            <img id="fullimg" src='https://meebrown.github.io/website/SelfPortrait.jpg' alt="Self-Portrait (2020). A being careens through a blue atmosphere with red clouds.">
+            <p id="fullimgp">Self-Portrait (2020)<br>Made with GIMP</p>
+        </div>
+        <div id="img2overlay" onclick="off1()">
+            <img id="fullimg" src='https://meebrown.github.io/website/PostHuman.jpg' alt="Untitled (2022). A pink creature video calls with a snake-like friend. The friend is using a virtual dog filter over its face.">
+            <p id="fullimgp">Untitled (2022)<br>Made with Blender, GIMP, and Inkscape</p>
+        </div>
     </body>
     <style>
-        html, body {
+        p{
+            font-family: sans-serif;
+        }
+        
+        body {
             margin: 0;
             padding: 0;
-            width: 100%;
-            height: 100%;
             overflow: hidden;
             cursor: none;
+            opacity: 0;
+            transition: opacity 1s;
         }
 
         a {
-            position: relative; 
-            z-index: 99999;
+            cursor: none;
         }
 
-        canvas {
-            position: relative; 
-            z-index: 91000;
+        .mainimgs{
+            height:40vh;
+            width:auto;
+            -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+            filter: grayscale(100%);
+            display:inline-block;
         }
+
+        #imgs {
+            margin-top: 15vh;
+            margin-bottom: 15vh;
+            margin-left: 15vh;
+            margin-right: 15vh;
+            font-size: 0;
+        }
+
+        img:hover {
+            -webkit-filter: grayscale(0%); /* Safari 6.0 - 9.0 */
+            filter: grayscale(0%);
+            cursor: pointer;
+        }
+
+        .canvases {
+            position:absolute;
+            pointer-events: none;
+        }
+
+        #editor-section{
+            width: 100vw;
+            height: 100vh;
+            position:relative;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #editor {
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;  /* <- higher than your canvases if it needs to go on top */
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        #menu {
+            position: fixed;
+            z-index: 20;
+        }
+
+        #img1overlay {
+            position: fixed;
+            display: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255);
+            z-index: 20;
+            cursor: url("https://meebrown.github.io/website/clickX.png") 13 13, auto;
+        }
+
+        #img2overlay {
+            position: fixed;
+            display: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255);
+            z-index: 20;
+            cursor: url("https://meebrown.github.io/website/clickX.png") 13 13, auto;
+        }
+        
+        #aboutoverlay {
+            position: fixed;
+            display: none;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255);
+            z-index: 25;
+            cursor: url("https://meebrown.github.io/website/clickX.png") 13 13, auto;
+        }
+
+        #fullimg {
+            -webkit-filter: grayscale(0%); /* Safari 6.0 - 9.0 */
+            filter: grayscale(0%);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: auto;
+            height: 91%;
+            max-width: 100%;
+            margin-top: .5%;
+            cursor: url("https://meebrown.github.io/website/clickX.png") 13 13, auto;
+        }
+
+        #fullimgp {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 1%;
+            text-align: center;
+            font-size: 2vh;
+        }
+        
+        #aboutp {
+            margin: 0;
+            top: 50%;
+            left: 50%;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            font-size: 3vh;
+            position: absolute;
+        }
+        
+        #aboutp a {
+            cursor: pointer;
+        }
+
+        .dropdown {
+            position: fixed;
+            z-index: 23;
+            animation: x 30s linear infinite alternate;
+            cursor: none;
+            -webkit-transform-origin: center center;
+            border: none;
+        }
+        
+        .dropbtn {
+          font-size: 10vh;
+          animation: y 24s linear infinite alternate;
+          background-color: transparent;
+          -webkit-transform-origin: center center;
+          border: none;
+          border-radius: 50%;
+          height: 12vh;
+          width: 12vh;
+          line-height: 6vh;
+          opacity: 0.25;
+          position: absolute;
+          cursor: none;
+        }
+        
+        .aboutword {
+            animation: yabout 24s linear infinite alternate;
+            font-size: 3vh;
+            opacity: 0;
+            cursor: none;
+            text-align: center;
+            position: relative;
+            background-color: transparent;
+            border: none;
+            top: 10.1vh;
+            left: 1.1vh;
+        }
+        
+        .shadow1 {
+            position: fixed;
+            z-index: 22;
+            animation: x 30s linear infinite alternate;
+            cursor: none;
+            -webkit-transform-origin: center center;
+            border: none;
+            animation-delay: 20ms;
+        }
+        
+        .shadow1btn {
+          font-size: 10vh;
+          opacity: 0.20;
+          animation: y 24s linear infinite alternate;
+          background-color: transparent;
+          cursor: none;
+          -webkit-transform-origin: center center;
+          border: none;
+          animation-delay: 20ms;
+          border-radius: 50%;
+          height: 12vh;
+          width: 12vh;
+          line-height: 6vh;
+        }
+        
+        .shadow2 {
+            position: fixed;
+            z-index: 22;
+            animation: x 30s linear infinite alternate;
+            cursor: none;
+            -webkit-transform-origin: center center;
+            border: none;
+            animation-delay: 40ms;
+        }
+        
+        .shadow2btn {
+          font-size: 10vh;
+          opacity: 0.15;
+          animation: y 24s linear infinite alternate;
+          background-color: transparent;
+          cursor: none;
+          -webkit-transform-origin: center center;
+          border: none;
+          animation-delay: 40ms;
+          border-radius: 50%;
+          height: 12vh;
+          width: 12vh;
+          line-height: 6vh;
+        }
+        
+        .shadow3 {
+            position: fixed;
+            z-index: 22;
+            animation: x 30s linear infinite alternate;
+            cursor: none;
+            -webkit-transform-origin: center center;
+            border: none;
+            animation-delay: 60ms;
+        }
+        
+        .shadow3btn {
+          font-size: 10vh;
+          opacity: 0.1;
+          animation: y 24s linear infinite alternate;
+          background-color: transparent;
+          cursor: none;
+          -webkit-transform-origin: center center;
+          border: none;
+          animation-delay: 60ms;
+          border-radius: 50%;
+          height: 12vh;
+          width: 12vh;
+          line-height: 6vh;
+        }
+        
+        .shadow4 {
+            position: fixed;
+            z-index: 22;
+            animation: x 30s linear infinite alternate;
+            cursor: none;
+            -webkit-transform-origin: center center;
+            border: none;
+            animation-delay: 80ms;
+        }
+        
+        .shadow4btn {
+          font-size: 10vh;
+          opacity: 0.05;
+          animation: y 24s linear infinite alternate;
+          background-color: transparent;
+          cursor: none;
+          -webkit-transform-origin: center center;
+          border: none;
+          animation-delay: 80ms;
+          border-radius: 50%;
+          height: 12vh;
+          width: 12vh;
+          line-height: 6vh;
+        }
+        
+        #spin {
+            animation-name: spin;
+            animation-duration: 5000ms;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+
+        @keyframes x {
+          75% {
+              transform: translateX(calc(96vw - 0.5vw));
+          }
+          100%{
+              transform:;
+          }
+        }
+
+        @keyframes y {
+          75% {
+              transform: translateY(calc(90vh - 0.5vh)) rotate(720deg);
+          }
+          100% {
+              transform:;
+          }
+        }
+        
+        @keyframes yabout {
+          75% {
+              transform: translateY(calc(90vh - 0.5vh));
+          }
+          100% {
+              transform:;
+          }
+        }
+        
+        .dropbtn:hover {
+            cursor: pointer;
+            opacity: 1;
+        }
+        
+        .dropbtn:hover ~ .aboutword {
+            cursor: pointer;
+            opacity: 1;
+        }
+
     </style>
+
     <script>
-        // Create a class for the canvas, including attributes for the id, // draw boolean, and coordinates
-        class Canvas {
-            constructor(canvas_id, draw, coord) {          
-                this.canvas_id = canvas_id; 
-                this.draw = draw;
-                this.coord = coord
-            }
         
-            // Sets draw to true and gets the mouse coordinates on the event
-            startDrawing(event) {
-                this.draw = true;
-                let canvas = document.getElementById(this.canvas_id); 
-                this.coord.x = (event.clientX - canvas.getBoundingClientRect().left);
-                this.coord.y = (event.clientY - canvas.getBoundingClientRect().top);
-            }
-
-            // The actual function that will draw on event (mousemove)
-            drawSketch(event) {
-                // If the draw boolean isn't true, terminate the function early
-                //if (!this.draw) {
-                //    return 0;
-                //}
-                // Select the canvas and get its context
-                let canvas = document.getElementById(this.canvas_id);
-                let ctx = canvas.getContext('2d');
-                // Start the line
-                ctx.beginPath();
-                
-                // Pull from the color and width from the associated 
-                // controls. The line cap is hardcoded to be rounded,
-                // because it looks more natural for a drawing application
-                ctx.strokeStyle = "black";
-                ctx.lineWidth = 1;
-                ctx.lineCap = "rounded";
-                // Start moving to the coordinates determined by mouse 
-                // movement. The position is updated as the cursor moves
-                ctx.moveTo(this.coord.x, this.coord.y);
-                this.coord.x = (event.clientX - canvas.getBoundingClientRect().left);
-                this.coord.y = (event.clientY - canvas.getBoundingClientRect().top);
-                
-                // Specify where the line ends
-                ctx.lineTo(this.coord.x , this.coord.y);
-                
-                // Draw the line
-                ctx.stroke();
-            }
-            // Sets draw to false on event (mouseup)
-            //stopDrawing(event) {
-            //    this.draw = true;
-            //}
-        }
-        
-        // Write the main function that will execute on load
-        function main() {
-            // Initialize the main object, canvas
-            let canvas = new Canvas("sketchCanvas", false, {x:0 , y:0});
-        
-        // Add event listeners for the mousedown, mouseup, and 
-        // mousemove. 
-        //document.addEventListener('mousemove', function(e){
-        //    canvas.startDrawing(e);
-        //});
-        //document.addEventListener('mouseup', function(e){
-        //    canvas.stopDrawing(e);
-        //});
-            document.addEventListener('mousemove', function(e){
-                canvas.drawSketch(e);
-            });
+        function abouton() {
+            document.getElementById("aboutoverlay").style.display = "block";
         }
 
-        // Wait until the page is loaded before applying the main function
-        window.addEventListener("DOMContentLoaded", ()=>{        
-            main();
-            images();
-        });
-
-        //change cursor to art piece
-        //function selfPortrait() {
-        //    document.addEventListener('mousedown', function(e){
-        //    canvas.startDrawing(e);
-        //    });
-        //}
-
-        function images() {
-            var canvas  = document.getElementById("sketchCanvas");
-            var context = canvas.getContext('2d');
-            var img = new Image();
-            img.src = 'https://meebrown.github.io/website/SelfPortrait.jpg';
-            img.onload = function (e) {
-            context.drawImage(img, 200, 200, 160, 200);
-            }
-            var img1 = new Image();
-            img1.src = 'https://meebrown.github.io/website/PostHuman.jpg';
-            img1.onload = function (e) {
-            context.drawImage(img1, 360, 200, 189, 200);
-            }
+        function aboutoff() {
+            document.getElementById("aboutoverlay").style.display = "none";
         }
+        
+        function on() {
+            document.getElementById("img1overlay").style.display = "block";
+        }
+
+        function off() {
+            document.getElementById("img1overlay").style.display = "none";
+        }
+
+        function on1() {
+            document.getElementById("img2overlay").style.display = "block";
+        }
+
+        function off1() {
+            document.getElementById("img2overlay").style.display = "none";
+        }
+        
     </script>
 </html>

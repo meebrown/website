@@ -372,6 +372,10 @@
         /// get computed style for image
         var img = document.getElementById('editor');
         var cs = getComputedStyle(img);
+        
+        //fix canvas when scrolling
+        var fixCanvas = document.getElementById("sketchCanvas").style;
+        fixCanvas.position = "fixed";
 
         /// these will return dimensions in *pixel* regardless of what
         /// you originally specified for image:

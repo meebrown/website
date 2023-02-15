@@ -16,12 +16,6 @@
             <div class="shadow2" onclick="abouton()">
                 <button class="shadow2btn">?</button>
             </div>
-            <div class="shadow3" onclick="abouton()">
-                <button class="shadow3btn">?</button>
-            </div>
-            <div class="shadow4" onclick="abouton()">
-                <button class="shadow4btn">?</button>
-            </div>
         </div>
         <div id="editor-section">
             <div class="editable" id="editor">
@@ -61,14 +55,11 @@
         }
 
         #imgs {
-            margin-top: 10vw;
-            margin-bottom: 10vw;
-            margin-left: 10vw;
-            margin-right: 10vw;
+            margin: 0;
             font-size: 0;
             display: flex;
             flex-direction: column;
-            width: 80vw;
+            width: 100%;
         }
         
         #imgs img {
@@ -205,6 +196,7 @@
           position: absolute;
           cursor: pointer;
           animation-delay: 200ms;
+          color: white;
         }
         
         .aboutword {
@@ -219,6 +211,7 @@
             top: 10.1vh;
             left: 1.1vh;
             animation-delay: 200ms;
+            color: white;
         }
         
         .shadow1 {
@@ -228,7 +221,7 @@
             cursor: none;
             -webkit-transform-origin: center center;
             border: none;
-            animation-delay: 220ms;
+            animation-delay: 225ms;
         }
         
         .shadow1btn {
@@ -239,11 +232,12 @@
           cursor: pointer;
           -webkit-transform-origin: center center;
           border: none;
-          animation-delay: 220ms;
+          animation-delay: 225ms;
           border-radius: 50%;
           height: 12vh;
           width: 12vh;
           line-height: 6vh;
+          color: white;
         }
         
         .shadow2 {
@@ -253,35 +247,10 @@
             cursor: none;
             -webkit-transform-origin: center center;
             border: none;
-            animation-delay: 240ms;
+            animation-delay: 250ms;
         }
         
         .shadow2btn {
-          font-size: 10vh;
-          opacity: 0.15;
-          animation: y 24s linear infinite alternate;
-          background-color: transparent;
-          cursor: pointer;
-          -webkit-transform-origin: center center;
-          border: none;
-          animation-delay: 240ms;
-          border-radius: 50%;
-          height: 12vh;
-          width: 12vh;
-          line-height: 6vh;
-        }
-        
-        .shadow3 {
-            position: fixed;
-            z-index: 22;
-            animation: x 30s linear infinite alternate;
-            cursor: none;
-            -webkit-transform-origin: center center;
-            border: none;
-            animation-delay: 260ms;
-        }
-        
-        .shadow3btn {
           font-size: 10vh;
           opacity: 0.1;
           animation: y 24s linear infinite alternate;
@@ -289,36 +258,12 @@
           cursor: pointer;
           -webkit-transform-origin: center center;
           border: none;
-          animation-delay: 260ms;
+          animation-delay: 250ms;
           border-radius: 50%;
           height: 12vh;
           width: 12vh;
           line-height: 6vh;
-        }
-        
-        .shadow4 {
-            position: fixed;
-            z-index: 22;
-            animation: x 30s linear infinite alternate;
-            cursor: none;
-            -webkit-transform-origin: center center;
-            border: none;
-            animation-delay: 280ms;
-        }
-        
-        .shadow4btn {
-          font-size: 10vh;
-          opacity: 0.05;
-          animation: y 24s linear infinite alternate;
-          background-color: transparent;
-          cursor: pointer;
-          -webkit-transform-origin: center center;
-          border: none;
-          animation-delay: 280ms;
-          border-radius: 50%;
-          height: 12vh;
-          width: 12vh;
-          line-height: 6vh;
+          color: white;
         }
         
         #spin {

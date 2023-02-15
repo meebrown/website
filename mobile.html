@@ -8,7 +8,7 @@
         <div class="qmks" onclick="abouton()">
             <div class="dropdown">
                 <button class="dropbtn" onclick="abouton()">?</button>
-                <button class="aboutword" onclick="abouton()">About</button>
+                <!--<button class="aboutword" onclick="abouton()">About</button>-->
             </div>
             <div class="shadow1" onclick="abouton()">
                 <button class="shadow1btn">?</button>
@@ -51,7 +51,6 @@
         body {
             margin: 0;
             padding: 0;
-            overflow: hidden;
             cursor: none;
             opacity: 0;
             transition: opacity 1s;
@@ -61,26 +60,20 @@
             cursor: none;
         }
 
-        .mainimgs{
-            height:40vh;
-            width:auto;
-            -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
-            filter: grayscale(100%);
-            display: inline-block;
-        }
-
         #imgs {
-            margin-top: 15vh;
-            margin-bottom: 15vh;
-            margin-left: 15vh;
-            margin-right: 15vh;
+            margin-top: 15vw;
+            margin-bottom: 15vw;
+            margin-left: 15vw;
+            margin-right: 15vw;
             font-size: 0;
+            display: flex;
+            flex-direction: column;
+            width: 70vw;
         }
-
-        img:hover {
-            -webkit-filter: grayscale(0%); /* Safari 6.0 - 9.0 */
-            filter: grayscale(0%);
-            cursor: none;
+        
+        #imgs img {
+            width: 100%;
+            height: auto;
         }
 
         .canvases {

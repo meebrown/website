@@ -395,10 +395,10 @@
                 ctx.drawImage(imageX, (this.coord.x - (size/86)), (this.coord.y - (size/86)), (size/43), (size/43));
             }
 
-            // Sets draw to false on event (mouseup)
-            //stopDrawing(event) {
-            //    this.draw = true;
-            //}
+            //Sets draw to false on event (mouseup)
+            stopDrawing(event) {
+                this.draw = false;
+            }
         }
 
         // Write the main function that will execute on load
@@ -411,10 +411,10 @@
         //document.addEventListener('mousemove', function(e){
         //    canvas.startDrawing(e);
         //});
-        //document.addEventListener('mouseup', function(e){
-        //    canvas.stopDrawing(e);
-        //});
-            document.addEventListener('mousemove', function(e){
+        document.addEventListener('touchend', function(e){
+            canvas.stopDrawing(e);
+        });
+            document.addEventListener('touchmove', function(e){
                 canvas.drawSketch(e);
             });
 

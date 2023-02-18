@@ -408,15 +408,15 @@
         
         // Add event listeners for the mousedown, mouseup, and
         // mousemove.
-            document.addEventListener('touchstart', function(e){
+            document.addEventListener('mousedown', function(e){
                 canvas.startDrawing(e);
             });
             
-            document.addEventListener('touchend', function(e){
+            document.addEventListener('mouseup', function(e){
                 canvas.stopDrawing(e);
             });
             
-            document.addEventListener('touchmove', function(e){
+            document.addEventListener('mousemove', function(e){
                 canvas.drawSketch(e);
             });
 

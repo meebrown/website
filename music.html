@@ -1,73 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
+  <head>
+    <title>HeatCanvas Demo</title>
 
-    <body onload="draw();">
-        <div id="editor">
-        </div>
-    </body>
-
-    <script type="application/javascript">
-        var zindex = 15;
-        var x_icon = 0;
-        var y_icon = 0;
-        var stepX = 1;
-        var stepY = 1;
-        var size_x = 23;
-        var size_y = 22;
-        var anim_img = null;
-
-        var canvas = document.createElement("canvas");
-        canvas.id = 'canvas';
-        canvas.style.zIndex = zindex; 
-        zindex++;
-
-        var parentDiv = document.getElementById("editor");
-        parentDiv.appendChild(canvas);
-
-        /// get computed style for image
-        var img = document.getElementById('editor');
-        var cs = getComputedStyle(img);
-        /// these will return dimensions in *pixel* regardless of what
-        /// you originally specified for image:
-        var width = parseInt(cs.getPropertyValue('width'), 10);
-        var height = parseInt(cs.getPropertyValue('height'), 10);
-        canvas.width = width;
-        canvas.height = height;
-        
-        function draw() {
-          var canvas = document.getElementById("canvas");
-          ctx = canvas.getContext("2d");
-          anim_img = new Image(size_x, size_y);
-          anim_img.onload = function() { setInterval('myAnimation()', 2); }
-          anim_img.src = 'https://pbs.twimg.com/profile_images/3352183391/a16302aab7bd8742ad3e39a75454008a_normal.jpeg';
-          anim_img.alt = 'Link to my Soundcloud profile';
-        }
-        function myAnimation() {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-         if (x_icon < 0 || x_icon > img.width - size_x) {stepX = -stepX; }
-         if (y_icon < 0 || y_icon > img.height - size_y) {stepY = -stepY; }
-            x_icon += stepX;
-            y_icon += stepY;
-         ctx.drawImage(anim_img, x_icon, y_icon);
-        }
-    </script>
-
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        #editor {
-            width: 100vw;
-            height: 100vh;        
-            z-index: 10;  /* <- higher than your canvases if it needs to go on top */
-            position: absolute;
-            left: 0;
-            top: 0;
+    <style type="text/css">
+        #canv{
+            border:1px #CCC solid;
         }
     </style>
+  </head>
+  <body>
+    <h1>HeatCanvas Demo</h1>
+    <p>Click on the canvas below to add some data, then hit the "HEAT MAP!" button. Refresh to reset. </p>
+    <div><canvas width="400" height="300" id="canv"></canvas></div>
+    <p>Value for each click: <input type="text" value="20" id="pressure" />
+    <button id="genData">Generate Random Data</button>
+    <button id="render">HEAT MAP!</button>
+    <button id="reset">Reset</button>
+    <span id="status"></span>
+    </p>
+    <p>Data Added: <span id="info">No Data.</span></p>
+    
+    <script type="module">
+        import {default as HeatCanvas} from 'heatcanvas.js';
+
+        // create heatmap object
+        var heatmap = new HeatCanvas("canv");
+        heatmap.onRenderingStart = function(){document.getElementById('status').innerHTML = 'rendering...'};
+        heatmap.onRenderingEnd = function(){document.getElementById('status').innerHTML = 'ready'};
+
+        /* add data interactively */
+        document.getElementById("canv").onclick = function(e){
+            var localX = e.clientX-e.target.offsetLeft;
+            var localY = e.clientY-e.target.offsetTop;
+            
+            var pressure = parseInt(document.getElementById("pressure").value);
+            addData(localX, localY, pressure);
+        }
+
+        function genData(){
+            var amount = 30;
+            var pressure = parseInt(document.getElementById("pressure").value);
+            for (var i=0; i< amount; i++){
+                var x = Math.floor(Math.random() * heatmap.width);
+                var y = Math.floor(Math.random() * heatmap.height);
+                addData(x, y, pressure);
+            }
+        }
+
+        function addData(x, y, v){
+            // push data into the map
+            heatmap.push(x, y, v);
+            
+            document.getElementById("canv").getContext("2d").fillText(v, x, y);
+            document.getElementById("info").innerHTML= "x:"+x+", y:"+y+", value:"+v;
+        }
+        function reset() {
+            heatmap.clear();
+        }
+        
+        function render(){
+            // you can render the map with custom colors
+            heatmap.render(1, null, null);
+        }
+
+        document.getElementById("genData").onclick = genData;
+        document.getElementById("render").onclick = render;
+        document.getElementById("reset").onclick = reset;
+    </script>
+  </body>
 </html>
+
+
+

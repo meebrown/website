@@ -29,7 +29,7 @@
         heatmap.onRenderingEnd = function(){document.getElementById('status').innerHTML = 'ready'};
 
         /* add data interactively */
-        document.getElementById("canv").onmousemove = function(e){
+        document.getElementById("canv").onclick = function(e){
             var localX = e.clientX-e.target.offsetLeft;
             var localY = e.clientY-e.target.offsetTop;
             
@@ -64,7 +64,7 @@
         }
 
         document.getElementById("genData").onclick = genData;
-        document.getElementById("canv").onmousemove = render;
+        document.getElementById("render").onclick = render;
         document.getElementById("reset").onclick = reset;
     </script>
   </body>

@@ -68,9 +68,9 @@
         document.getElementById("reset").onclick = reset;
         
         setInterval(myTimer, 100);
-        function myTimer(canvas, e) {
+        function myTimer(heatmap, e) {
             
-            var rect = canvas.getBoundingClientRect();
+            var rect = heatmap.getBoundingClientRect();
             
            // var localX = e.clientX-e.target.offsetLeft;
             var localX = e.clientX - rect.left;

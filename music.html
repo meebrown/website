@@ -82,8 +82,8 @@
         }
         
         //Get Mouse Position
-        function getMousePos(canvas, e) {
-            var rect = canvas.getBoundingClientRect();
+        function getMousePos(heatmap, e) {
+            var rect = heatmap.getBoundingClientRect();
             return {
                 x: e.clientX - rect.left,
                 y: e.clientY - rect.top

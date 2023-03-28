@@ -70,12 +70,12 @@
         setInterval(myTimer, 100);
         function myTimer(heatmap, e) {
             
-            var rect = heatmap.getBoundingClientRect();
+            var mousePos = getMousePos(heatmap, e);
             
            // var localX = e.clientX-e.target.offsetLeft;
-            var localX = e.clientX - rect.left;
+            var localX = mousePos.x;
            // var localY = e.clientY-e.target.offsetTop;
-            var localY = e.clientY - rect.top
+            var localY = mousePos.y;
             
             var pressure = parseInt(document.getElementById("pressure").value);
             addData(localX, localY, pressure);

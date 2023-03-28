@@ -29,13 +29,13 @@
         heatmap.onRenderingEnd = function(){document.getElementById('status').innerHTML = 'ready'};
 
         /* add data interactively */
-        document.getElementById("canv").onclick = function(e){
-            var localX = e.clientX-e.target.offsetLeft;
-            var localY = e.clientY-e.target.offsetTop;
+       // document.getElementById("canv").onclick = function(e){
+       //     var localX = e.clientX-e.target.offsetLeft;
+      //      var localY = e.clientY-e.target.offsetTop;
             
-            var pressure = parseInt(document.getElementById("pressure").value);
-            addData(localX, localY, pressure);
-        }
+       //     var pressure = parseInt(document.getElementById("pressure").value);
+       //     addData(localX, localY, pressure);
+       // }
 
         function genData(){
             var amount = 30;
@@ -66,6 +66,30 @@
         document.getElementById("genData").onclick = genData;
         document.getElementById("render").onclick = render;
         document.getElementById("reset").onclick = reset;
+        
+        setInterval(myTimer, 100);
+        function myTimer(canvas, e) {
+            
+            var rect = canvas.getBoundingClientRect();
+            
+           // var localX = e.clientX-e.target.offsetLeft;
+            var localX = e.clientX - rect.left;
+           // var localY = e.clientY-e.target.offsetTop;
+            var localY = e.clientY - rect.top
+            
+            var pressure = parseInt(document.getElementById("pressure").value);
+            addData(localX, localY, pressure);
+        }
+        
+        //Get Mouse Position
+        function getMousePos(canvas, e) {
+            var rect = canvas.getBoundingClientRect();
+            return {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+        }
+        
     </script>
   </body>
 </html>

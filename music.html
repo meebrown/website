@@ -67,15 +67,15 @@
         document.getElementById("render").onclick = render;
         document.getElementById("reset").onclick = reset;
         
-       // setInterval(myTimer(e), 100);
-        //function myTimer(e) {
+        setInterval(myTimer(e), 100);
+        function myTimer(e) {
             
-        //    var localX = e.clientX-e.target.offsetLeft;
-        //    var localY = e.clientY-e.target.offsetTop;
+            var localX = e.clientX-e.target.offsetLeft;
+            var localY = e.clientY-e.target.offsetTop;
                  
-        //    var pressure = parseInt(document.getElementById("pressure").value);
-        //    addData(localX, localY, pressure);
-        //}
+            var pressure = parseInt(document.getElementById("pressure").value);
+            addData(localX, localY, pressure);
+        }
         
     </script>
   </body>

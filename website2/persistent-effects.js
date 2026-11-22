@@ -4,6 +4,8 @@
     const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
     const overlayIds = [...page.querySelectorAll('[id$="overlay"]')].map(element => element.id);
     const mouseInput = page.dataset.effectsInput === 'mouse';
+    const textLinkCursor = page.dataset.cursorPolicy === 'text-links';
+    const allContent = page.dataset.effectsScope === 'all';
     const svgNS = 'http://www.w3.org/2000/svg';
     const displacementScale = 80;
     let surface = null;
@@ -18,10 +20,12 @@
     let gesture = null;
     let tap = null;
     let mousePoint = null;
+    let cursorPoint = null;
     let suspended = false;
     let freezeVisibility = false;
     let effectFade = null;
     let visibilityGeneration = 0;
+    const viewerAnimations = new Map();
 
     function fadeEffects(opacity, duration) {
         const from = getComputedStyle(overlay).opacity;
@@ -38,7 +42,19 @@
 
     // The artwork viewer temporarily hides the glass without discarding its marks.
     window.galleryEffects = {
+        artworkRect(source) {
+            const copy = surface && surface.root.getElementById(source.id);
+            return (copy || source).getBoundingClientRect();
+        },
+        syncArtwork() {
+            if (allContent) {
+                if (!surface) makeSurface();
+                syncScene();
+            }
+            wake();
+        },
         suspend(duration = 300) {
+            if (allContent) { wake(); return Promise.resolve(); }
             const generation = ++visibilityGeneration;
             suspended = true;
             freezeVisibility = true;
@@ -51,12 +67,14 @@
             });
         },
         restore(duration = 750) {
+            if (allContent) { wake(); return Promise.resolve(); }
             visibilityGeneration++;
             freezeVisibility = false;
             wake();
             return fadeEffects(1, duration);
         },
         resume() {
+            if (allContent) { wake(); return; }
             visibilityGeneration++;
             suspended = false;
             freezeVisibility = false;
@@ -80,7 +98,8 @@
         layer.className = 'distortion-layer';
         const root = layer.attachShadow({ mode: 'open' });
         const style = document.createElement('style');
-        style.textContent = document.getElementById('page-styles').textContent + `
+        style.textContent = document.getElementById('page-styles').textContent +
+            (allContent ? document.getElementById('viewer-styles').textContent : '') + `
             :host { contain: layout style; }
             .distortion-scene {
                 position: absolute; inset: 0; background: white;
@@ -95,13 +114,15 @@
         const scene = document.createElement('div');
         scene.className = 'distortion-scene';
         const copy = page.cloneNode(true);
-        copy.querySelectorAll('*').forEach(element => {
+        const copies = [copy];
+        if (allContent) copies.push(document.getElementById('artwork-viewer').cloneNode(true));
+        for (const tree of copies) tree.querySelectorAll('*').forEach(element => {
             for (const attribute of [...element.attributes]) {
                 if (attribute.name.startsWith('on')) element.removeAttribute(attribute.name);
             }
             if (element.matches('a, button')) element.tabIndex = -1;
         });
-        scene.appendChild(copy);
+        scene.append(...copies);
         const svg = svgElement('svg', { width: 0, height: 0, style: 'position:absolute' }, root);
         const defs = svgElement('defs', {}, svg);
         const filter = svgElement('filter', {
@@ -126,9 +147,56 @@
         // This unattached canvas only encodes the filter's displacement texture.
         // It never draws page content, ink, or dots on the screen.
         const texture = document.createElement('canvas');
-        surface = { layer, root, scene, filter, image, texture, context: texture.getContext('2d') };
+        surface = { layer, root, scene, pageCopy: copy, filter, image, texture, context: texture.getContext('2d') };
         resizeField();
         syncScene();
+    }
+
+    function syncViewer() {
+        const original = document.getElementById('artwork-viewer');
+        const copy = surface.root.getElementById('artwork-viewer');
+        copy.hidden = original.hidden;
+        const nodes = [original, ...original.querySelectorAll('*')];
+        const replicas = [copy, ...copy.querySelectorAll('*')];
+        const targets = new Map();
+        nodes.forEach((node, index) => {
+            const replica = replicas[index];
+            targets.set(node, replica);
+            if (replica.style.cssText !== node.style.cssText) replica.style.cssText = node.style.cssText;
+            for (const name of ['src', 'alt', 'aria-hidden']) {
+                if (node.hasAttribute(name) && replica.getAttribute(name) !== node.getAttribute(name)) {
+                    replica.setAttribute(name, node.getAttribute(name));
+                }
+            }
+        });
+        surface.root.getElementById('viewer-caption').textContent = document.getElementById('viewer-caption').textContent;
+        // Mirror compositor animations so the filtered copy moves with the real viewer.
+        const live = new Set(original.getAnimations({ subtree: true }));
+        for (const [animation, mirrored] of viewerAnimations) {
+            if (!live.has(animation)) { mirrored.cancel(); viewerAnimations.delete(animation); }
+        }
+        let moving = false;
+        for (const animation of live) {
+            const target = targets.get(animation.effect.target);
+            if (!target) continue;
+            let mirrored = viewerAnimations.get(animation);
+            if (!mirrored) {
+                mirrored = target.animate(animation.effect.getKeyframes(), animation.effect.getTiming());
+                // Pending source animations must render their first keyframe immediately.
+                mirrored.pause();
+                mirrored.currentTime = animation.currentTime || 0;
+                viewerAnimations.set(animation, mirrored);
+            }
+            if (animation.playState === 'running' && animation.startTime !== null) {
+                mirrored.playbackRate = animation.playbackRate;
+                mirrored.startTime = animation.startTime;
+            } else {
+                mirrored.pause();
+                mirrored.currentTime = animation.currentTime || 0;
+            }
+            moving ||= animation.playState === 'running' || animation.pending;
+        }
+        if (moving) wake();
     }
 
     function syncScene() {
@@ -144,8 +212,8 @@
                 surface.root.getElementById(element.id).style.visibility = element.style.visibility;
             }
         }
-        if (mouseInput && !suspended) {
-            const point = mousePoint && sourcePoint(mousePoint.x, mousePoint.y);
+        if (mouseInput) {
+            const point = !suspended && mousePoint && sourcePoint(mousePoint.x, mousePoint.y);
             const hovered = point && document.elementFromPoint(point.x, point.y);
             // The inert copy cannot receive CSS :hover; mirror hover at the warped
             // source position so color reveals and About still match the visible controls.
@@ -156,11 +224,12 @@
             }
         }
         const originals = page.getAnimations({ subtree: true });
-        surface.scene.getAnimations({ subtree: true }).forEach((animation, index) => {
+        surface.pageCopy.getAnimations({ subtree: true }).forEach((animation, index) => {
             if (originals[index] && originals[index].startTime !== null) {
                 animation.startTime = originals[index].startTime;
             }
         });
+        if (allContent) syncViewer();
     }
 
     function resizeField() {
@@ -203,7 +272,7 @@
         if (!surface) makeSurface();
         dx = Math.max(-45, Math.min(45, dx));
         dy = Math.max(-45, Math.min(45, dy));
-        const radiusX = kind === 'tap' ? 62 : (60 + Math.abs(dx)) * 0.5;
+        const radiusX = kind === 'tap' ? 62 : (60 + Math.abs(dx)) / 3;
         const radiusY = kind === 'tap' ? 62 : 60 + Math.abs(dy);
         const left = Math.max(0, Math.floor((cx - radiusX) * fieldWidth / viewportWidth));
         const right = Math.min(fieldWidth - 1, Math.ceil((cx + radiusX) * fieldWidth / viewportWidth));
@@ -217,8 +286,8 @@
                 if (distance >= 1) continue;
                 const feather = (1 - distance) ** 2;
                 // Sampling toward the center creates a lasting local expansion.
-                const offsetX = kind === 'tap' ? -localX * 0.33 : -dx * 0.4 - localX * Math.abs(dx) * 0.003;
-                const offsetY = kind === 'tap' ? -localY * 0.33 : -dy * 0.4 - localY * Math.abs(dy) * 0.003;
+                const offsetX = kind === 'tap' ? -localX * 0.33 : -dx * 0.48 - localX * Math.abs(dx) * 0.0036;
+                const offsetY = kind === 'tap' ? -localY * 0.33 : -dy * 0.48 - localY * Math.abs(dy) * 0.0036;
                 const index = y * fieldWidth + x;
                 // Bound the distortion strength, not the number or lifetime of marks.
                 fieldX[index] = Math.max(-32, Math.min(32, fieldX[index] + offsetX * feather));
@@ -242,6 +311,14 @@
     function render() {
         frame = 0;
         syncScene();
+        if (textLinkCursor) {
+            // Cursor feedback follows the same displaced link as click targeting.
+            const point = cursorPoint && (surface && !suspended ?
+                sourcePoint(cursorPoint.x, cursorPoint.y) : cursorPoint);
+            const hit = point && document.elementFromPoint(point.x, point.y);
+            const link = hit && hit.closest('a[href]');
+            document.documentElement.dataset.linkCursor = String(!!link && !!link.textContent.trim());
+        }
         if (!dirty || !surface) return;
         const pixels = surface.context.createImageData(fieldWidth, fieldHeight);
         for (let index = 0; index < fieldX.length; index++) {
@@ -298,6 +375,10 @@
             start: performance.now(), moved: false, scrollY: window.scrollY };
     }, { passive: true });
     document.addEventListener('pointermove', event => {
+        if (textLinkCursor && event.pointerType === 'mouse') {
+            cursorPoint = { x: event.clientX, y: event.clientY };
+            wake();
+        }
         if (suspended) { mousePoint = null; return; }
         if (mouseInput && event.pointerType === 'mouse') {
             const previous = mousePoint;
@@ -319,6 +400,7 @@
         }
     }, { passive: true });
     document.addEventListener('pointerout', event => {
+        if (!event.relatedTarget && textLinkCursor) { cursorPoint = null; wake(); }
         if (mouseInput) {
             if (!event.relatedTarget) mousePoint = null;
             wake();
@@ -354,12 +436,13 @@
         const source = document.elementFromPoint(point.x, point.y);
         const selector = 'a, button, [onclick]';
         const target = source && source.closest(selector);
-        if (target && target !== event.target.closest(selector)) {
+        const originalTarget = event.target.closest(selector);
+        if ((target && target !== originalTarget) || (allContent && originalTarget && !target)) {
             event.preventDefault();
             event.stopImmediatePropagation();
             const point = tap;
             tap = null;
-            target.click();
+            if (target) target.click();
             stamp('tap', point.x, point.y);
         }
     }, true);

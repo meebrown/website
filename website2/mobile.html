@@ -5,7 +5,7 @@
         <title>Matthew Brown</title>
     </head>
     <body onload="document.body.style.opacity='1'">
-        <div id="page-content">
+        <div id="page-content" data-viewer-side-margin="20">
         <div class="qmks" onclick="abouton()">
             <div class="dropdown">
                 <button class="dropbtn" onclick="abouton()">?</button>
@@ -26,8 +26,11 @@
                 </div>
             </div>
         </div>
-        <div id="aboutoverlay" onclick="aboutoff()">
-            <p id="aboutp">Matthew Brown<br><br>Email: <a href="mailto:meeb1998@gmail.com">meeb1998@gmail.com</a><br>Instagram: <a href="https://www.instagram.com/mattheweebrown/">@mattheweebrown</a></p>
+        <div id="aboutoverlay" onclick="aboutoff()" role="dialog" aria-modal="true" aria-label="About Matthew Brown" aria-hidden="true">
+            <button id="about-close" class="overlay-close" type="button" aria-label="Close information" onclick="event.stopPropagation(); aboutoff()">
+                <img src="clickX.png" width="24" height="24" alt="">
+            </button>
+            <p id="aboutp" onclick="event.stopPropagation()">Matthew Brown<br><br>Email: <a href="mailto:meeb1998@gmail.com">meeb1998@gmail.com</a><br>Instagram: <a href="https://www.instagram.com/mattheweebrown/">@mattheweebrown</a></p>
         </div>
         </div>
         <div id="interaction-overlay" aria-hidden="true" inert></div>
@@ -35,11 +38,24 @@
             <div class="viewer-backdrop"></div>
             <img id="viewer-image" alt="">
             <p id="viewer-caption"></p>
-            <button id="artwork-close" type="button" aria-label="Close artwork">
+            <button class="overlay-close" id="artwork-close" type="button" aria-label="Close artwork">
                 <img src="clickX.png" width="24" height="24" alt="">
             </button>
         </div>
     <style id="page-styles">
+        html, body, body * { cursor: none !important; }
+        a[href] { cursor: pointer !important; }
+        html[data-link-cursor="false"] body * { cursor: none !important; }
+        html[data-link-cursor="true"], html[data-link-cursor="true"] body * { cursor: pointer !important; }
+
+        .overlay-close {
+            position: absolute; top: 16px; left: 16px; width: 44px; height: 44px; padding: 10px;
+            border: 0; border-radius: 4px; background: transparent;
+        }
+        .overlay-close img { display: block; width: 24px; height: 24px; filter: none; }
+        .overlay-close:focus-visible { outline: 2px solid #555; outline-offset: 3px; }
+
+
         p{
             font-family: 'Helvetica', 'Arial', sans-serif;
         }
@@ -243,34 +259,59 @@
     </style>
 
     <script>
+        let aboutFocus = null;
         function abouton() {
-            document.getElementById("aboutoverlay").style.display = "block";
+            const panel = document.getElementById('aboutoverlay');
+            if (panel.style.display === 'block') return;
+            aboutFocus = document.activeElement;
+            panel.style.display = 'block';
+            panel.setAttribute('aria-hidden', 'false');
+            document.getElementById('about-close').focus({ preventScroll: true });
         }
 
         function aboutoff() {
-            document.getElementById("aboutoverlay").style.display = "none";
+            const panel = document.getElementById('aboutoverlay');
+            panel.style.display = 'none';
+            panel.setAttribute('aria-hidden', 'true');
+            if (aboutFocus?.isConnected) aboutFocus.focus({ preventScroll: true });
         }
-        
+
+        document.addEventListener('keydown', event => {
+            const panel = document.getElementById('aboutoverlay');
+            if (panel.style.display !== 'block') return;
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                aboutoff();
+            } else if (event.key === 'Tab') {
+                const controls = [...panel.querySelectorAll('button, a[href]')];
+                const first = controls[0], last = controls[controls.length - 1];
+                if (event.shiftKey && (document.activeElement === first || !panel.contains(document.activeElement))) {
+                    event.preventDefault(); last.focus();
+                } else if (!event.shiftKey && (document.activeElement === last || !panel.contains(document.activeElement))) {
+                    event.preventDefault(); first.focus();
+                }
+            }
+        });
     </script>
     <style>
         #interaction-overlay {
             position: fixed;
             inset: 0;
-            z-index: 30;
+            z-index: 50;
             overflow: hidden;
             pointer-events: none;
             user-select: none;
             -webkit-user-select: none;
         }
 
-        .distortion-layer {
-            position: absolute;
-            inset: 0;
+        #ink-canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
         }
 
         @media (prefers-reduced-motion: reduce) {
-            #interaction-overlay { display: none; }
             .dropdown, .dropbtn, .aboutword, .shadow1, .shadow1btn, .shadow2, .shadow2btn {
                 animation: none;
             }
@@ -289,14 +330,9 @@
             text-align: center; font-size: clamp(12px, 2vh, 16px); line-height: 1.4; white-space: pre-line;
             opacity: 0; pointer-events: none;
         }
-        #artwork-close {
-            position: absolute; top: 16px; left: 16px; width: 44px; height: 44px; padding: 10px;
-            border: 0; border-radius: 4px; background: transparent; opacity: 0; cursor: pointer;
-        }
-        #artwork-close img { display: block; width: 24px; height: 24px; filter: none; cursor: pointer; }
-        #artwork-close:focus-visible { outline: 2px solid #555; outline-offset: 3px; }
+        #artwork-close { opacity: 0; }
     </style>
-    <script src="persistent-effects.js"></script>
+    <script src="mobile-ink.js"></script>
     <script src="artwork-viewer.js"></script>
     </body>
 </html>

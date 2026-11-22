@@ -5,7 +5,7 @@
         <title>Matthew Brown</title>
     </head>
     <body onload="document.body.style.opacity='1'">
-        <div id="page-content" data-effects-input="mouse">
+        <div id="page-content" data-effects-input="mouse" data-cursor-policy="text-links">
         <div class="qmks" onclick="abouton()">
             <div class="dropdown">
                 <button class="dropbtn" onclick="abouton()">?</button>
@@ -29,8 +29,11 @@
                 </div>
             </div>
         </div>
-        <div id="aboutoverlay" onclick="aboutoff()">
-            <p id="aboutp">Matthew Brown<br><br>Email: <a href="mailto:meeb1998@gmail.com">meeb1998@gmail.com</a><br>Instagram: <a href="https://www.instagram.com/mattheweebrown/">@mattheweebrown</a></p>
+        <div id="aboutoverlay" onclick="aboutoff()" role="dialog" aria-modal="true" aria-label="About Matthew Brown" aria-hidden="true">
+            <button id="about-close" class="overlay-close" type="button" aria-label="Close information" onclick="event.stopPropagation(); aboutoff()">
+                <img src="clickX.png" width="24" height="24" alt="">
+            </button>
+            <p id="aboutp" onclick="event.stopPropagation()">Matthew Brown<br><br>Email: <a href="mailto:meeb1998@gmail.com">meeb1998@gmail.com</a><br>Instagram: <a href="https://www.instagram.com/mattheweebrown/">@mattheweebrown</a></p>
         </div>
         </div>
         <div id="interaction-overlay" aria-hidden="true" inert></div>
@@ -38,11 +41,24 @@
             <div class="viewer-backdrop"></div>
             <img id="viewer-image" alt="">
             <p id="viewer-caption"></p>
-            <button id="artwork-close" type="button" aria-label="Close artwork">
+            <button class="overlay-close" id="artwork-close" type="button" aria-label="Close artwork">
                 <img src="clickX.png" width="24" height="24" alt="">
             </button>
         </div>
     <style id="page-styles">
+        html, body, body * { cursor: none !important; }
+        a[href] { cursor: pointer !important; }
+        html[data-link-cursor="false"] body * { cursor: none !important; }
+        html[data-link-cursor="true"], html[data-link-cursor="true"] body * { cursor: pointer !important; }
+
+        .overlay-close {
+            position: absolute; top: 16px; left: 16px; width: 44px; height: 44px; padding: 10px;
+            border: 0; border-radius: 4px; background: transparent;
+        }
+        .overlay-close img { display: block; width: 24px; height: 24px; filter: none; }
+        .overlay-close:focus-visible { outline: 2px solid #555; outline-offset: 3px; }
+
+
         p{
             font-family: 'Helvetica', 'Arial', sans-serif;
         }
@@ -61,19 +77,22 @@
         }
 
         .mainimgs{
-            height: min(80vh, calc(80vw / var(--gallery-aspect-ratio)));
+            height: min(90vh, calc(90vw / var(--gallery-aspect-ratio)));
             width:auto;
             flex: none;
-            -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
-            filter: grayscale(100%);
+            filter: none;
             display: block;
+            position: relative;
+            transform-origin: center center;
+            transition: transform 220ms ease;
+            z-index: 0;
         }
 
         #imgs {
             /* Sum of the two artworks' natural width-to-height ratios. */
             --gallery-aspect-ratio: 1.7705882353;
             position: fixed;
-            inset: 10vh 10vw;
+            inset: 10vh 5vw;
             margin: 0;
             display: flex;
             align-items: center;
@@ -82,10 +101,14 @@
             font-size: 0;
         }
 
-        img:hover {
-            -webkit-filter: grayscale(0%); /* Safari 6.0 - 9.0 */
-            filter: grayscale(0%);
+        .mainimgs:hover, .mainimgs[data-effects-hover] {
+            transform: scale(1.04);
+            z-index: 1;
             cursor: pointer;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .mainimgs { transition: none; }
         }
 
         #editor-section{
@@ -301,14 +324,39 @@
                 window.location.href = "mobile.html";
         }
         
+        let aboutFocus = null;
         function abouton() {
-            document.getElementById("aboutoverlay").style.display = "block";
+            const panel = document.getElementById('aboutoverlay');
+            if (panel.style.display === 'block') return;
+            aboutFocus = document.activeElement;
+            panel.style.display = 'block';
+            panel.setAttribute('aria-hidden', 'false');
+            document.getElementById('about-close').focus({ preventScroll: true });
         }
 
         function aboutoff() {
-            document.getElementById("aboutoverlay").style.display = "none";
+            const panel = document.getElementById('aboutoverlay');
+            panel.style.display = 'none';
+            panel.setAttribute('aria-hidden', 'true');
+            if (aboutFocus?.isConnected) aboutFocus.focus({ preventScroll: true });
         }
-        
+
+        document.addEventListener('keydown', event => {
+            const panel = document.getElementById('aboutoverlay');
+            if (panel.style.display !== 'block') return;
+            if (event.key === 'Escape') {
+                event.preventDefault();
+                aboutoff();
+            } else if (event.key === 'Tab') {
+                const controls = [...panel.querySelectorAll('button, a[href]')];
+                const first = controls[0], last = controls[controls.length - 1];
+                if (event.shiftKey && (document.activeElement === first || !panel.contains(document.activeElement))) {
+                    event.preventDefault(); last.focus();
+                } else if (!event.shiftKey && (document.activeElement === last || !panel.contains(document.activeElement))) {
+                    event.preventDefault(); first.focus();
+                }
+            }
+        });
     </script>
     <style>
         #interaction-overlay {
@@ -347,12 +395,7 @@
             text-align: center; font-size: 2vh; line-height: 1.4; white-space: pre-line;
             opacity: 0; pointer-events: none;
         }
-        #artwork-close {
-            position: absolute; top: 16px; left: 16px; width: 44px; height: 44px; padding: 10px;
-            border: 0; border-radius: 4px; background: transparent; opacity: 0; cursor: pointer;
-        }
-        #artwork-close img { display: block; width: 24px; height: 24px; filter: none; cursor: pointer; }
-        #artwork-close:focus-visible { outline: 2px solid #555; outline-offset: 3px; }
+        #artwork-close { opacity: 0; }
     </style>
     <script src="persistent-effects.js"></script>
     <script src="artwork-viewer.js"></script>

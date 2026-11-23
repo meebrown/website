@@ -8,6 +8,7 @@
     const allContent = page.dataset.effectsScope === 'all';
     const smudgeWidthScale = Number(page.dataset.smudgeWidthScale ?? 1);
     const svgNS = 'http://www.w3.org/2000/svg';
+    const xlinkNS = 'http://www.w3.org/1999/xlink';
     const displacementScale = 80;
     let surface = null;
     let fieldX, fieldY, fieldWidth = 0, fieldHeight = 0;
@@ -104,7 +105,7 @@
             :host { contain: layout style; }
             .distortion-scene {
                 position: absolute; inset: 0; background: white;
-                pointer-events: none; filter: url(#surface-warp);
+                pointer-events: none;
             }
             #editor-section {
                 position: absolute; top: 0; left: 0; min-height: 100vh;
@@ -152,7 +153,8 @@
         // This unattached canvas only encodes the filter's displacement texture.
         // It never draws page content, ink, or dots on the screen.
         const texture = document.createElement('canvas');
-        surface = { layer, root, scene, pageCopy: copy, pageTargets, filter, image, texture, context: texture.getContext('2d') };
+        surface = { layer, root, scene, pageCopy: copy, pageTargets, filter, image, texture,
+            fieldRevision: 0, context: texture.getContext('2d') };
         resizeField();
         syncScene();
     }
@@ -344,7 +346,17 @@
             pixels.data[index * 4 + 3] = 255;
         }
         surface.context.putImageData(pixels, 0, 0);
-        surface.image.setAttribute('href', surface.texture.toDataURL());
+        const mapURL = surface.texture.toDataURL();
+        surface.image.setAttribute('href', mapURL);
+        surface.image.setAttributeNS(xlinkNS, 'xlink:href', mapURL);
+        // Safari can cache the first map for a filter ID. Reuse the same nodes,
+        // but give each changed map a fresh reference so WebKit repaints it.
+        // https://aave.com/design/building-glass-for-the-web
+        const filterId = `surface-warp-${++surface.fieldRevision}`;
+        surface.filter.id = filterId;
+        const filterURL = `url(#${filterId})`;
+        surface.scene.style.filter = filterURL;
+        surface.scene.style.webkitFilter = filterURL;
         dirty = false;
         // Nothing schedules another frame while idle; the stored field stays visible.
     }

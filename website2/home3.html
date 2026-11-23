@@ -5,7 +5,7 @@
         <title>Matthew Brown</title>
     </head>
     <body onload="document.body.style.opacity='1'">
-        <div id="page-content" data-effects-input="mouse" data-cursor-policy="visible" data-effects-scope="all" data-viewer-transition="zoom" data-smudge-width-scale="0.375" data-smudge-strength-scale="1.5">
+        <div id="page-content" data-effects-input="mouse" data-cursor-policy="visible" data-effects-scope="all" data-viewer-transition="zoom" data-smudge-width-scale="0.375" data-smudge-strength-scale="1.5" data-tap-radius-scale="0.8" data-tap-strength-scale="3">
         <div class="qmks" onclick="abouton()">
             <div class="dropdown">
                 <button class="dropbtn" onclick="abouton()" aria-label="About">?</button>
@@ -297,7 +297,7 @@
     <script>
         
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
-                window.location.href = "mobile.html";
+                window.location.href = "mobile1.html";
         }
         
         let aboutFocus = null;
@@ -372,7 +372,12 @@
         }
         #artwork-close { opacity: 0; }
     </style>
-    <script src="persistent-effects.js?v=cda3be76f79d"></script>
+    <script src="effects/displacement-field.js?v=2ff08f0bc297"></script>
+    <script src="effects/svg-renderer.js?v=e7437e40837c"></script>
+    <script src="effects/scene-copy.js?v=0b2f309a7d20"></script>
+    <script src="effects/input-controller.js?v=feea9779a6ff"></script>
+    <script src="effects/overlay-visibility.js?v=47175f8a1343"></script>
+    <script src="persistent-effects.js?v=803dc3a40b8c"></script>
     <script src="artwork-viewer.js"></script>
     </body>
 </html>

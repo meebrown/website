@@ -5,7 +5,7 @@
         <title>Matthew Brown</title>
     </head>
     <body onload="document.body.style.opacity='1'">
-        <div id="page-content" data-effects-input="mouse" data-cursor-policy="text-links" data-effects-scope="all" data-viewer-transition="zoom" data-smudge-width-scale="0.5">
+        <div id="page-content" data-effects-input="mouse" data-cursor-policy="visible" data-effects-scope="all" data-viewer-transition="zoom" data-smudge-width-scale="0.5">
         <div class="qmks" onclick="abouton()">
             <div class="dropdown">
                 <button class="dropbtn" onclick="abouton()" aria-label="About">?</button>
@@ -45,10 +45,8 @@
             <img src="clickX.png" width="24" height="24" alt="">
         </button>
     <style id="page-styles">
-        html, body, body * { cursor: none !important; }
-        a[href] { cursor: pointer !important; }
-        html[data-link-cursor="false"] body * { cursor: none !important; }
-        html[data-link-cursor="true"], html[data-link-cursor="true"] body * { cursor: pointer !important; }
+        html, body, body * { cursor: auto !important; }
+        a[href], a[href] *, button, button *, [role="button"] { cursor: pointer !important; }
 
         .overlay-close {
             position: absolute; top: 16px; left: 16px; width: 44px; height: 44px; padding: 10px;

@@ -115,6 +115,10 @@
         const scene = document.createElement('div');
         scene.className = 'distortion-scene';
         const copy = page.cloneNode(true);
+        const pageTargets = new Map([[page, copy]]);
+        const sourceNodes = [...page.querySelectorAll('*')];
+        const copiedNodes = [...copy.querySelectorAll('*')];
+        sourceNodes.forEach((element, index) => pageTargets.set(element, copiedNodes[index]));
         const copies = [copy];
         if (allContent) copies.push(document.getElementById('artwork-viewer').cloneNode(true));
         for (const tree of copies) tree.querySelectorAll('*').forEach(element => {
@@ -148,7 +152,7 @@
         // This unattached canvas only encodes the filter's displacement texture.
         // It never draws page content, ink, or dots on the screen.
         const texture = document.createElement('canvas');
-        surface = { layer, root, scene, pageCopy: copy, filter, image, texture, context: texture.getContext('2d') };
+        surface = { layer, root, scene, pageCopy: copy, pageTargets, filter, image, texture, context: texture.getContext('2d') };
         resizeField();
         syncScene();
     }
@@ -224,12 +228,23 @@
                 copy.toggleAttribute('data-effects-hover', !!hovered && element.contains(hovered));
             }
         }
-        const originals = page.getAnimations({ subtree: true });
-        surface.pageCopy.getAnimations({ subtree: true }).forEach((animation, index) => {
-            if (originals[index] && originals[index].startTime !== null) {
-                animation.startTime = originals[index].startTime;
+        // Hover transitions can exist in only one scene and reorder getAnimations().
+        // Match each looping CSS animation to its own copied element and name.
+        // Hover transitions keep their own timing and never reset the moving controls.
+        const matched = new Set();
+        for (const original of page.getAnimations({ subtree: true })) {
+            if (!original.animationName || original.startTime === null) continue;
+            const target = surface.pageTargets.get(original.effect.target);
+            if (!target) continue;
+            const mirrored = target.getAnimations().find(animation =>
+                animation.effect.target === target &&
+                animation.animationName === original.animationName && !matched.has(animation));
+            if (mirrored) {
+                mirrored.playbackRate = original.playbackRate;
+                mirrored.startTime = original.startTime;
+                matched.add(mirrored);
             }
-        });
+        }
         if (allContent) syncViewer();
     }
 

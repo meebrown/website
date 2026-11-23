@@ -25,6 +25,7 @@
     input = modules.createInputController({
         mouseInput, textLinkCursor, allContent, reducedMotion, sourcePoint, wake,
         captureTaps: page.dataset.effectsInput === 'touch',
+        manualTouchScroll: document.documentElement.hasAttribute('data-direct-scroll'),
         isSuspended: visibility.isSuspended, hasSurface: () => !!scene,
         onSmudge: (x, y, dx, dy) => stamp('smudge', x, y, dx, dy),
         onTap: (x, y) => stamp('tap', x, y)
@@ -90,6 +91,9 @@
                 syncScene();
             }
             wake();
+        },
+        syncScroll() {
+            if (scene) scene.syncScroll();
         },
         suspend: visibility.suspend,
         restore: visibility.restore,

@@ -5,7 +5,7 @@
     // the displayed distortion. Field storage and rendering live elsewhere.
     modules.createInputController = ({ mouseInput, textLinkCursor, allContent,
         reducedMotion, isSuspended, sourcePoint, onSmudge, onTap, wake,
-        hasSurface = () => true, captureTaps = false }) => {
+        hasSurface = () => true, captureTaps = false, manualTouchScroll = false }) => {
         let touch = null;
         let pinching = false;
         let gesture = null;
@@ -66,6 +66,12 @@
         }, { passive: true });
         for (const name of ['touchend', 'touchcancel']) {
             document.addEventListener(name, event => {
+                if (!mouseInput && manualTouchScroll) {
+                    // Direct scrolling already stamped this movement in touchmove.
+                    // Consume any scroll event queued just before the finger lifted.
+                    validScrollAnchor = false;
+                    lastScrollY = window.scrollY;
+                }
                 touch = null;
                 if (name === 'touchcancel' && !mouseInput) validScrollAnchor = false;
                 if (!event.touches.length) pinching = false;

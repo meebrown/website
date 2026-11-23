@@ -7,6 +7,7 @@
     overlay.appendChild(canvas);
     const context = canvas.getContext('2d');
     const movementThreshold = 8;
+    const manualTouchScroll = document.documentElement.hasAttribute('data-direct-scroll');
     let touch = null;
     let mouse = null;
     let pinching = false;
@@ -69,7 +70,7 @@
         context.setTransform(canvas.width / innerWidth, 0, 0, canvas.height / innerHeight, 0, 0);
         context.strokeStyle = '#000';
         context.fillStyle = '#000';
-        context.lineWidth = 2;
+        context.lineWidth = 3;
         context.lineCap = 'round';
         context.lineJoin = 'round';
         resetInput();
@@ -107,7 +108,11 @@
         if (!input) return;
         const next = point(input);
         tap = candidate(touch, next);
-        scrollAnchor = touch.drawing ? next : null;
+        scrollAnchor = touch.drawing && !manualTouchScroll ? next : null;
+        if (manualTouchScroll) {
+            lastScrollX = scrollX;
+            lastScrollY = scrollY;
+        }
         touch = null;
     }, { passive: true });
 

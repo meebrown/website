@@ -94,11 +94,15 @@
             if (moving) wake();
         }
 
-        function sync({ mousePoint = null, suspended = false, freezeVisibility = false,
-            sourcePoint = (x, y) => ({ x, y }) } = {}) {
+        function syncScroll() {
             // The distortion stays on the glass as live content scrolls beneath it.
             root.getElementById('editor-section').style.transform =
                 `translate(${-window.scrollX}px, ${-window.scrollY}px)`;
+        }
+
+        function sync({ mousePoint = null, suspended = false, freezeVisibility = false,
+            sourcePoint = (x, y) => ({ x, y }) } = {}) {
+            syncScroll();
             for (const id of overlayIds) {
                 root.getElementById(id).style.display = document.getElementById(id).style.display;
             }
@@ -136,6 +140,6 @@
             if (allContent) syncViewer();
         }
 
-        return { root, scene, sync, artworkRect };
+        return { root, scene, sync, syncScroll, artworkRect };
     };
 })();

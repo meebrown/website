@@ -5,19 +5,19 @@
         <title>Matthew Brown</title>
     </head>
     <body onload="document.body.style.opacity='1'">
-        <div id="page-content" data-effects-input="mouse" data-cursor-policy="visible" data-effects-scope="all" data-viewer-transition="zoom" data-smudge-width-scale="0.375" data-smudge-strength-scale="1.5" data-tap-radius-scale="0.8" data-tap-strength-scale="3">
+        <div id="page-content" data-effects-input="mouse" data-cursor-policy="visible" data-effects-scope="all" data-viewer-transition="zoom" data-smudge-width-scale="0.5625" data-smudge-strength-scale="1.05" data-tap-radius-scale="0.8" data-tap-strength-scale="3">
         <div class="qmks" onclick="abouton()">
             <div class="dropdown">
-                <button class="dropbtn" onclick="abouton()" aria-label="About">?</button>
+                <button class="dropbtn" onclick="abouton()" aria-label="About"><span class="question-glyph">?</span></button>
             </div>
             <div class="shadow1" onclick="abouton()">
-                <button class="shadow1btn">?</button>
+                <button class="shadow1btn"><span class="question-glyph">?</span></button>
             </div>
             <div class="shadow2" onclick="abouton()">
-                <button class="shadow2btn">?</button>
+                <button class="shadow2btn"><span class="question-glyph">?</span></button>
             </div>
             <div class="shadow3" onclick="abouton()">
-                <button class="shadow3btn">?</button>
+                <button class="shadow3btn"><span class="question-glyph">?</span></button>
             </div>
         </div>
         <div id="editor-section">
@@ -267,9 +267,47 @@
             animation-timing-function: linear;
         }
 
+        /* Move the button box to the viewport edges; rotate only its glyph. */
+        #page-content {
+            --question-size: min(12vh, 100vw, 100vh);
+            --question-travel-x: max(0px, calc(100vw - var(--question-size)));
+            --question-travel-y: max(0px, calc(100vh - var(--question-size)));
+        }
+        @supports (height: 100dvh) {
+            #page-content {
+                --question-size: min(12dvh, 100dvw, 100dvh);
+                --question-travel-x: max(0px, calc(100dvw - var(--question-size)));
+                --question-travel-y: max(0px, calc(100dvh - var(--question-size)));
+            }
+        }
+        .qmks > div {
+            left: 0; top: 0;
+            width: var(--question-size); height: var(--question-size);
+        }
+        .qmks > div > button {
+            position: absolute; left: 0; top: 0;
+            width: var(--question-size); height: var(--question-size);
+            margin: 0; padding: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: calc(var(--question-size) * 5 / 6); line-height: 1;
+            overflow: hidden;
+        }
+        .question-glyph {
+            display: inline-block; line-height: 1; pointer-events: none;
+            animation: question-turn 24s linear infinite alternate;
+            animation-delay: inherit;
+        }
+        @keyframes question-turn {
+            0%, 100% { transform: rotate(0deg); }
+            75% { transform: rotate(720deg); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .question-glyph { animation: none; }
+        }
+
         @keyframes x {
           75% {
-              transform: translateX(calc(96vw - 0.5vw));
+              transform: translateX(var(--question-travel-x));
           }
           100%{
               transform: none;
@@ -278,7 +316,7 @@
 
         @keyframes y {
           75% {
-              transform: translateY(calc(90vh - 0.5vh)) rotate(720deg);
+              transform: translateY(var(--question-travel-y));
           }
           100% {
               transform: none;
@@ -374,10 +412,10 @@
     </style>
     <script src="effects/displacement-field.js?v=2ff08f0bc297"></script>
     <script src="effects/svg-renderer.js?v=e7437e40837c"></script>
-    <script src="effects/scene-copy.js?v=0b2f309a7d20"></script>
-    <script src="effects/input-controller.js?v=feea9779a6ff"></script>
+    <script src="effects/scene-copy.js?v=5e420d29075b"></script>
+    <script src="effects/input-controller.js?v=8874acb63b80"></script>
     <script src="effects/overlay-visibility.js?v=47175f8a1343"></script>
-    <script src="persistent-effects.js?v=803dc3a40b8c"></script>
+    <script src="persistent-effects.js?v=b33d3f4967f5"></script>
     <script src="artwork-viewer.js"></script>
     </body>
 </html>

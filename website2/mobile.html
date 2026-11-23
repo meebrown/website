@@ -8,14 +8,14 @@
         <div id="page-content" data-viewer-side-margin="20">
         <div class="qmks" onclick="abouton()">
             <div class="dropdown">
-                <button class="dropbtn" onclick="abouton()">?</button>
+                <button class="dropbtn" onclick="abouton()"><span class="question-glyph">?</span></button>
                 <!--<button class="aboutword" onclick="abouton()">About</button>-->
             </div>
             <div class="shadow1" onclick="abouton()">
-                <button class="shadow1btn">?</button>
+                <button class="shadow1btn"><span class="question-glyph">?</span></button>
             </div>
             <div class="shadow2" onclick="abouton()">
-                <button class="shadow2btn">?</button>
+                <button class="shadow2btn"><span class="question-glyph">?</span></button>
             </div>
         </div>
         <div id="editor-section">
@@ -159,7 +159,7 @@
           position: absolute;
           cursor: pointer;
           animation-delay: 200ms;
-          color: white;
+          color: #000;
         }
         
         .aboutword {
@@ -174,7 +174,7 @@
             top: 10vh;
             left: 3vh;
             animation-delay: 200ms;
-            color: white;
+            color: #000;
         }
         
         .shadow1 {
@@ -198,7 +198,7 @@
           animation-delay: 230ms;
           height: 12vh;
           line-height: 6vh;
-          color: white;
+          color: #000;
         }
         
         .shadow2 {
@@ -222,7 +222,7 @@
           animation-delay: 260ms;
           height: 12vh;
           line-height: 6vh;
-          color: white;
+          color: #000;
         }
         
         #spin {
@@ -232,9 +232,47 @@
             animation-timing-function: linear;
         }
 
+        /* Move the button box to the viewport edges; rotate only its glyph. */
+        #page-content {
+            --question-size: min(12vh, 100vw, 100vh);
+            --question-travel-x: max(0px, calc(100vw - var(--question-size)));
+            --question-travel-y: max(0px, calc(100vh - var(--question-size)));
+        }
+        @supports (height: 100dvh) {
+            #page-content {
+                --question-size: min(12dvh, 100dvw, 100dvh);
+                --question-travel-x: max(0px, calc(100dvw - var(--question-size)));
+                --question-travel-y: max(0px, calc(100dvh - var(--question-size)));
+            }
+        }
+        .qmks > div {
+            left: 0; top: 0;
+            width: var(--question-size); height: var(--question-size);
+        }
+        .qmks > div > button {
+            position: absolute; left: 0; top: 0;
+            width: var(--question-size); height: var(--question-size);
+            margin: 0; padding: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: calc(var(--question-size) * 5 / 6); line-height: 1;
+            overflow: hidden;
+        }
+        .question-glyph {
+            display: inline-block; line-height: 1; pointer-events: none;
+            animation: question-turn 24s linear infinite alternate;
+            animation-delay: inherit;
+        }
+        @keyframes question-turn {
+            0%, 100% { transform: rotate(0deg); }
+            75% { transform: rotate(720deg); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .question-glyph { animation: none; }
+        }
+
         @keyframes x {
           75% {
-              transform: translateX(calc(96vw - 0.5vw));
+              transform: translateX(var(--question-travel-x));
           }
           100%{
               transform: none;
@@ -243,7 +281,7 @@
 
         @keyframes y {
           75% {
-              transform: translateY(calc(90vh - 0.5vh)) rotate(720deg);
+              transform: translateY(var(--question-travel-y));
           }
           100% {
               transform: none;
@@ -335,8 +373,8 @@
         }
         #artwork-close { opacity: 0; }
     </style>
-    <script src="mobile-scroll.js?v=6905b556568b"></script>
-    <script src="mobile-ink.js"></script>
+    <script src="mobile-scroll.js?v=d097bee64a10"></script>
+    <script src="mobile-ink.js?v=0b8906039c32"></script>
     <script src="artwork-viewer.js"></script>
     </body>
 </html>

@@ -6,6 +6,7 @@
     const mouseInput = page.dataset.effectsInput === 'mouse';
     const textLinkCursor = page.dataset.cursorPolicy === 'text-links';
     const allContent = page.dataset.effectsScope === 'all';
+    const smudgeWidthScale = Number(page.dataset.smudgeWidthScale ?? 1);
     const svgNS = 'http://www.w3.org/2000/svg';
     const displacementScale = 80;
     let surface = null;
@@ -272,7 +273,7 @@
         if (!surface) makeSurface();
         dx = Math.max(-45, Math.min(45, dx));
         dy = Math.max(-45, Math.min(45, dy));
-        const radiusX = kind === 'tap' ? 62 : (60 + Math.abs(dx)) / 3;
+        const radiusX = kind === 'tap' ? 62 : (60 + Math.abs(dx)) / 3 * smudgeWidthScale;
         const radiusY = kind === 'tap' ? 62 : 60 + Math.abs(dy);
         const left = Math.max(0, Math.floor((cx - radiusX) * fieldWidth / viewportWidth));
         const right = Math.min(fieldWidth - 1, Math.ceil((cx + radiusX) * fieldWidth / viewportWidth));
@@ -431,6 +432,8 @@
     }
     document.addEventListener('click', event => {
         if (suspended || !surface || reducedMotion.matches || !tap || event.detail === 0) return;
+        // Controls above the glass use their actual, undistorted hit targets.
+        if (event.target.closest('[data-effects-clean-control]')) return;
         // Keep hit targets aligned with the permanently warped controls.
         const point = sourcePoint(event.clientX, event.clientY);
         const source = document.elementFromPoint(point.x, point.y);

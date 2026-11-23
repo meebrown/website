@@ -3,6 +3,7 @@
     const image = document.getElementById('viewer-image');
     const caption = document.getElementById('viewer-caption');
     const closeButton = document.getElementById('artwork-close');
+    const externalClose = !viewer.contains(closeButton);
     const backdrop = viewer.querySelector('.viewer-backdrop');
     const page = document.getElementById('page-content');
     const mobile = page.dataset.effectsInput !== 'mouse';
@@ -194,6 +195,7 @@
             if (token !== transition || session !== current) return;
         }
         viewer.hidden = true;
+        if (externalClose) closeButton.hidden = true;
         viewer.setAttribute('aria-hidden', 'true');
         syncArtwork();
         unlockScroll(session);
@@ -243,6 +245,7 @@
         for (const element of fading) element.style.opacity = '0';
         viewer.style.cursor = 'none';
         viewer.hidden = false;
+        if (externalClose) closeButton.hidden = false;
         viewer.setAttribute('aria-hidden', 'false');
         source.style.visibility = 'hidden';
         // Avoid a hidden hover transition while the fitted image fades in.

@@ -7,6 +7,7 @@
     const textLinkCursor = page.dataset.cursorPolicy === 'text-links';
     const allContent = page.dataset.effectsScope === 'all';
     const smudgeWidthScale = Number(page.dataset.smudgeWidthScale ?? 1);
+    const smudgeStrengthScale = Number(page.dataset.smudgeStrengthScale ?? 1);
     const svgNS = 'http://www.w3.org/2000/svg';
     const xlinkNS = 'http://www.w3.org/1999/xlink';
     const displacementScale = 80;
@@ -46,7 +47,8 @@
     window.galleryEffects = {
         artworkRect(source) {
             const copy = surface && surface.root.getElementById(source.id);
-            return (copy || source).getBoundingClientRect();
+            const rect = (copy || source).getBoundingClientRect();
+            return rect.width && rect.height ? rect : source.getBoundingClientRect();
         },
         syncArtwork() {
             if (allContent) {
@@ -131,30 +133,34 @@
         scene.append(...copies);
         const svg = svgElement('svg', { width: 0, height: 0, style: 'position:absolute' }, root);
         const defs = svgElement('defs', {}, svg);
-        const filter = svgElement('filter', {
-            id: 'surface-warp', x: 0, y: 0,
-            filterUnits: 'userSpaceOnUse', primitiveUnits: 'userSpaceOnUse',
-            'color-interpolation-filters': 'sRGB'
-        }, defs);
-        const image = svgElement('feImage', {
-            x: 0, y: 0, preserveAspectRatio: 'none', result: 'field'
-        }, filter);
-        // Byte 128 must map to exactly 0.5 so untouched areas do not shift.
-        const normalized = svgElement('feComponentTransfer', { in: 'field', result: 'normalized' }, filter);
-        for (const name of ['feFuncR', 'feFuncG']) {
-            svgElement(name, { type: 'linear', slope: 1, intercept: -0.5 / 255 }, normalized);
-        }
-        svgElement('feDisplacementMap', {
-            in: 'SourceGraphic', in2: 'normalized', scale: displacementScale,
-            xChannelSelector: 'R', yChannelSelector: 'G'
-        }, filter);
+        const buffers = Array.from({ length: 2 }, (_, index) => {
+            const filter = svgElement('filter', {
+                id: `surface-warp-buffer-${index}`, x: 0, y: 0,
+                filterUnits: 'userSpaceOnUse', primitiveUnits: 'userSpaceOnUse',
+                'color-interpolation-filters': 'sRGB'
+            }, defs);
+            const image = svgElement('feImage', {
+                x: 0, y: 0, preserveAspectRatio: 'none', result: 'field'
+            }, filter);
+            // Byte 128 must map to exactly 0.5 so untouched areas do not shift.
+            const normalized = svgElement('feComponentTransfer', { in: 'field', result: 'normalized' }, filter);
+            for (const name of ['feFuncR', 'feFuncG']) {
+                svgElement(name, { type: 'linear', slope: 1, intercept: -0.5 / 255 }, normalized);
+            }
+            svgElement('feDisplacementMap', {
+                in: 'SourceGraphic', in2: 'normalized', scale: displacementScale,
+                xChannelSelector: 'R', yChannelSelector: 'G'
+            }, filter);
+            return { filter, image };
+        });
         root.append(style, scene);
         overlay.appendChild(layer);
         // This unattached canvas only encodes the filter's displacement texture.
         // It never draws page content, ink, or dots on the screen.
         const texture = document.createElement('canvas');
-        surface = { layer, root, scene, pageCopy: copy, pageTargets, filter, image, texture,
-            fieldRevision: 0, context: texture.getContext('2d') };
+        surface = { layer, root, scene, pageCopy: copy, pageTargets, buffers, texture,
+            fieldRevision: 0, activeBuffer: -1, pendingMap: null, presentedField: null,
+            context: texture.getContext('2d') };
         resizeField();
         syncScene();
     }
@@ -252,6 +258,11 @@
 
     function resizeField() {
         if (!surface) return;
+        // Discard an obsolete preparation; the last ready filter stays visible.
+        if (surface.pendingMap) {
+            surface.pendingMap.decoder.onload = surface.pendingMap.decoder.onerror = null;
+            surface.pendingMap = null;
+        }
         // Resolution is capped independently of DPR. Bilinear resampling retains
         // every mark in the same relative position after rotation/resizing.
         const ratio = Math.min(0.5, 256 / innerWidth, 512 / innerHeight);
@@ -278,10 +289,6 @@
         fieldWidth = width; fieldHeight = height;
         viewportWidth = innerWidth; viewportHeight = innerHeight;
         surface.texture.width = width; surface.texture.height = height;
-        for (const element of [surface.filter, surface.image]) {
-            element.setAttribute('width', viewportWidth);
-            element.setAttribute('height', viewportHeight);
-        }
         dirty = true;
     }
 
@@ -296,6 +303,7 @@
         const right = Math.min(fieldWidth - 1, Math.ceil((cx + radiusX) * fieldWidth / viewportWidth));
         const top = Math.max(0, Math.floor((cy - radiusY) * fieldHeight / viewportHeight));
         const bottom = Math.min(fieldHeight - 1, Math.ceil((cy + radiusY) * fieldHeight / viewportHeight));
+        const strength = kind === 'tap' ? 1 : smudgeStrengthScale;
         for (let y = top; y <= bottom; y++) {
             for (let x = left; x <= right; x++) {
                 const localX = (x + 0.5) * viewportWidth / fieldWidth - cx;
@@ -308,8 +316,8 @@
                 const offsetY = kind === 'tap' ? -localY * 0.33 : -dy * 0.48 - localY * Math.abs(dy) * 0.0036;
                 const index = y * fieldWidth + x;
                 // Bound the distortion strength, not the number or lifetime of marks.
-                fieldX[index] = Math.max(-32, Math.min(32, fieldX[index] + offsetX * feather));
-                fieldY[index] = Math.max(-32, Math.min(32, fieldY[index] + offsetY * feather));
+                fieldX[index] = Math.max(-32, Math.min(32, fieldX[index] + offsetX * strength * feather));
+                fieldY[index] = Math.max(-32, Math.min(32, fieldY[index] + offsetY * strength * feather));
             }
         }
         dirty = true;
@@ -328,6 +336,7 @@
 
     function render() {
         frame = 0;
+        presentMap();
         syncScene();
         if (textLinkCursor) {
             // Cursor feedback follows the same displaced link as click targeting.
@@ -337,7 +346,12 @@
             const link = hit && hit.closest('a[href]');
             document.documentElement.dataset.linkCursor = String(!!link && !!link.textContent.trim());
         }
-        if (!dirty || !surface) return;
+        if (!dirty || !surface || surface.pendingMap) return;
+        prepareMap();
+        // No frame loop while idle; a decoded map wakes rendering when ready.
+    }
+
+    function prepareMap() {
         const pixels = surface.context.createImageData(fieldWidth, fieldHeight);
         for (let index = 0; index < fieldX.length; index++) {
             pixels.data[index * 4] = Math.round(128 + fieldX[index] * 255 / displacementScale);
@@ -346,19 +360,61 @@
             pixels.data[index * 4 + 3] = 255;
         }
         surface.context.putImageData(pixels, 0, 0);
-        const mapURL = surface.texture.toDataURL();
-        surface.image.setAttribute('href', mapURL);
-        surface.image.setAttributeNS(xlinkNS, 'xlink:href', mapURL);
-        // Safari can cache the first map for a filter ID. Reuse the same nodes,
-        // but give each changed map a fresh reference so WebKit repaints it.
-        // https://aave.com/design/building-glass-for-the-web
-        const filterId = `surface-warp-${++surface.fieldRevision}`;
-        surface.filter.id = filterId;
-        const filterURL = `url(#${filterId})`;
+        const pending = {
+            buffer: surface.buffers[surface.activeBuffer === 0 ? 1 : 0],
+            mapURL: surface.texture.toDataURL(), decoder: new Image(),
+            field: { x: fieldX.slice(), y: fieldY.slice(), width: fieldWidth, height: fieldHeight,
+                viewportWidth, viewportHeight },
+            decoded: false, primed: false
+        };
+        surface.pendingMap = pending;
+        dirty = false;
+        // Never replace a map that is still loading. Input continues accumulating
+        // in the numeric field, and the next preparation includes every stroke.
+        pending.decoder.onload = async () => {
+            if (pending.decoder.decode) {
+                try { await pending.decoder.decode(); } catch (_) { /* onload already succeeded */ }
+            }
+            if (surface.pendingMap !== pending) return;
+            pending.decoded = true;
+            wake();
+        };
+        pending.decoder.onerror = () => {
+            if (surface.pendingMap !== pending) return;
+            surface.pendingMap = null;
+            dirty = true;
+        };
+        pending.decoder.src = pending.mapURL;
+    }
+
+    function presentMap() {
+        const pending = surface && surface.pendingMap;
+        if (!pending || !pending.decoded) return;
+        if (!pending.primed) {
+            const { filter, image } = pending.buffer;
+            for (const element of [filter, image]) {
+                element.setAttribute('width', pending.field.viewportWidth);
+                element.setAttribute('height', pending.field.viewportHeight);
+            }
+            // A fresh ID avoids Safari's filter-result cache. Prepare only the
+            // inactive buffer, leaving the displayed filter and its map untouched.
+            // https://aave.com/design/building-glass-for-the-web
+            filter.id = `surface-warp-${++surface.fieldRevision}`;
+            image.setAttribute('href', pending.mapURL);
+            image.setAttributeNS(xlinkNS, 'xlink:href', pending.mapURL);
+            pending.primed = true;
+            // SVG feImage does not reliably emit load. Its predecoded PNG gets
+            // a presentation frame in the inactive buffer before we switch.
+            wake();
+            return;
+        }
+        const filterURL = `url(#${pending.buffer.filter.id})`;
         surface.scene.style.filter = filterURL;
         surface.scene.style.webkitFilter = filterURL;
-        dirty = false;
-        // Nothing schedules another frame while idle; the stored field stays visible.
+        surface.activeBuffer = surface.buffers.indexOf(pending.buffer);
+        surface.presentedField = pending.field;
+        pending.decoder.onload = pending.decoder.onerror = null;
+        surface.pendingMap = null;
     }
 
     // Passive touch tracking lets the browser retain native scrolling and pinch zoom.
@@ -446,16 +502,18 @@
         gesture = null;
     }, { passive: true });
     function sourcePoint(clientX, clientY) {
-        const x = Math.max(0, Math.min(fieldWidth - 1, clientX * fieldWidth / viewportWidth - 0.5));
-        const y = Math.max(0, Math.min(fieldHeight - 1, clientY * fieldHeight / viewportHeight - 0.5));
+        const shown = surface && surface.presentedField;
+        if (!shown || reducedMotion.matches) return { x: clientX, y: clientY };
+        const x = Math.max(0, Math.min(shown.width - 1, clientX * shown.width / shown.viewportWidth - 0.5));
+        const y = Math.max(0, Math.min(shown.height - 1, clientY * shown.height / shown.viewportHeight - 0.5));
         const x0 = Math.floor(x), y0 = Math.floor(y);
-        const x1 = Math.min(fieldWidth - 1, x0 + 1), y1 = Math.min(fieldHeight - 1, y0 + 1);
+        const x1 = Math.min(shown.width - 1, x0 + 1), y1 = Math.min(shown.height - 1, y0 + 1);
         function offset(field) {
-            const top = field[y0 * fieldWidth + x0] * (1 - x + x0) + field[y0 * fieldWidth + x1] * (x - x0);
-            const bottom = field[y1 * fieldWidth + x0] * (1 - x + x0) + field[y1 * fieldWidth + x1] * (x - x0);
+            const top = field[y0 * shown.width + x0] * (1 - x + x0) + field[y0 * shown.width + x1] * (x - x0);
+            const bottom = field[y1 * shown.width + x0] * (1 - x + x0) + field[y1 * shown.width + x1] * (x - x0);
             return top * (1 - y + y0) + bottom * (y - y0);
         }
-        return { x: clientX + offset(fieldX), y: clientY + offset(fieldY) };
+        return { x: clientX + offset(shown.x), y: clientY + offset(shown.y) };
     }
     document.addEventListener('click', event => {
         if (suspended || !surface || reducedMotion.matches || !tap || event.detail === 0) return;

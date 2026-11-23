@@ -43,6 +43,9 @@
             </button>
         </div>
     <style id="page-styles">
+        html { touch-action: pinch-zoom; overscroll-behavior: none; scroll-behavior: auto; }
+        html[data-scroll-zoomed] { touch-action: auto; }
+        body { overscroll-behavior: none; }
         html, body, body * { cursor: none !important; }
         a[href] { cursor: pointer !important; }
         html[data-link-cursor="false"] body * { cursor: none !important; }
@@ -332,6 +335,7 @@
         }
         #artwork-close { opacity: 0; }
     </style>
+    <script src="mobile-scroll.js?v=6905b556568b"></script>
     <script src="mobile-ink.js"></script>
     <script src="artwork-viewer.js"></script>
     </body>

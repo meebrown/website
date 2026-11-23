@@ -43,6 +43,9 @@
             </button>
         </div>
     <style id="page-styles">
+        html { touch-action: pinch-zoom; overscroll-behavior: none; scroll-behavior: auto; }
+        html[data-scroll-zoomed] { touch-action: auto; }
+        body { overscroll-behavior: none; }
         /* Keep the filtered source bounded to the viewport on mobile Safari. */
         .distortion-scene { overflow: hidden; }
         html, body, body * { cursor: none !important; }
@@ -334,6 +337,7 @@
         }
         #artwork-close { opacity: 0; }
     </style>
+    <script src="mobile-scroll.js?v=6905b556568b"></script>
     <script src="effects/displacement-field.js?v=2ff08f0bc297"></script>
     <script src="effects/svg-renderer.js?v=e7437e40837c"></script>
     <script src="effects/scene-copy.js?v=0b2f309a7d20"></script>

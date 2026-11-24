@@ -5,20 +5,19 @@
         <title>Matthew Brown</title>
     </head>
     <body onload="document.body.style.opacity='1'">
-        <div id="page-content" data-effects-input="mouse" data-cursor-policy="text-links" data-effects-scope="all" data-viewer-transition="zoom">
+        <div id="page-content" data-effects-input="mouse" data-cursor-policy="hidden" data-viewer-transition="zoom">
         <div class="qmks" onclick="abouton()">
             <div class="dropdown">
-                <button class="dropbtn" onclick="abouton()">?</button>
-                <button class="aboutword" onclick="abouton()">About</button>
+                <button class="dropbtn" onclick="abouton()" aria-label="About"><span class="question-glyph">?</span></button>
             </div>
             <div class="shadow1" onclick="abouton()">
-                <button class="shadow1btn">?</button>
+                <button class="shadow1btn"><span class="question-glyph">?</span></button>
             </div>
             <div class="shadow2" onclick="abouton()">
-                <button class="shadow2btn">?</button>
+                <button class="shadow2btn"><span class="question-glyph">?</span></button>
             </div>
             <div class="shadow3" onclick="abouton()">
-                <button class="shadow3btn">?</button>
+                <button class="shadow3btn"><span class="question-glyph">?</span></button>
             </div>
         </div>
         <div id="editor-section">
@@ -29,32 +28,32 @@
                 </div>
             </div>
         </div>
-        <div id="aboutoverlay" onclick="aboutoff()" role="dialog" aria-modal="true" aria-label="About Matthew Brown" aria-hidden="true">
-            <button id="about-close" class="overlay-close" type="button" aria-label="Close information" onclick="event.stopPropagation(); aboutoff()">
-                <img src="clickX.png" width="24" height="24" alt="">
-            </button>
+        <div id="aboutoverlay" onclick="aboutoff()" role="dialog" aria-modal="true" aria-label="About Matthew Brown" aria-owns="about-close" aria-hidden="true">
             <p id="aboutp" onclick="event.stopPropagation()">Matthew Brown<br><br>Email: <a href="mailto:meeb1998@gmail.com">meeb1998@gmail.com</a><br>Instagram: <a href="https://www.instagram.com/mattheweebrown/">@mattheweebrown</a></p>
         </div>
         </div>
         <div id="interaction-overlay" aria-hidden="true" inert></div>
-        <div id="artwork-viewer" role="dialog" aria-modal="true" aria-label="Artwork viewer" hidden>
+        <div id="artwork-viewer" role="dialog" aria-modal="true" aria-label="Artwork viewer" aria-owns="artwork-close" hidden>
             <div class="viewer-backdrop"></div>
             <img id="viewer-image" alt="">
             <p id="viewer-caption"></p>
-            <button class="overlay-close" id="artwork-close" type="button" aria-label="Close artwork">
-                <img src="clickX.png" width="24" height="24" alt="">
-            </button>
         </div>
+        <button id="about-close" class="overlay-close" type="button" data-effects-clean-control hidden aria-label="Close information" aria-controls="aboutoverlay" onclick="event.stopPropagation(); aboutoff()">
+            <img src="clickX.png" width="24" height="24" alt="">
+        </button>
+        <button class="overlay-close" id="artwork-close" type="button" data-effects-clean-control hidden aria-label="Close artwork" aria-controls="artwork-viewer">
+            <img src="clickX.png" width="24" height="24" alt="">
+        </button>
     <style id="page-styles">
         html, body, body * { cursor: none !important; }
-        a[href] { cursor: pointer !important; }
-        html[data-link-cursor="false"] body * { cursor: none !important; }
-        html[data-link-cursor="true"], html[data-link-cursor="true"] body * { cursor: pointer !important; }
 
         .overlay-close {
             position: absolute; top: 16px; left: 16px; width: 44px; height: 44px; padding: 10px;
             border: 0; border-radius: 4px; background: transparent;
         }
+        [data-effects-clean-control] { position: fixed; z-index: 60; }
+        [data-effects-clean-control][hidden] { display: none !important; }
+        .mainimgs:focus-visible { outline-color: #fff; }
         .overlay-close img { display: block; width: 24px; height: 24px; filter: none; }
         .overlay-close:focus-visible { outline: 2px solid #555; outline-offset: 3px; }
 
@@ -83,8 +82,9 @@
             filter: none;
             display: block;
             position: relative;
-            transform-origin: center center;
-            transition: transform 220ms ease;
+            outline: 2px solid transparent;
+            outline-offset: -2px;
+            transition: outline-color 160ms ease;
             z-index: 0;
         }
 
@@ -102,7 +102,7 @@
         }
 
         .mainimgs:hover, .mainimgs[data-effects-hover] {
-            transform: scale(1.04);
+            outline-color: #fff;
             z-index: 1;
             cursor: pointer;
         }
@@ -186,19 +186,6 @@
           animation-delay: 200ms;
         }
         
-        .aboutword {
-            animation: yabout 24s linear infinite alternate;
-            font-size: 3vh;
-            opacity: 0;
-            cursor: none;
-            text-align: center;
-            position: relative;
-            background-color: transparent;
-            border: none;
-            top: 10.1vh;
-            left: 1.1vh;
-            animation-delay: 200ms;
-        }
         
         .shadow1 {
             position: fixed;
@@ -279,9 +266,49 @@
             animation-timing-function: linear;
         }
 
+        /* Move the button box to the viewport edges; rotate only its glyph. */
+        #page-content {
+            --question-size: min(12vh, 100vw, 100vh);
+            --question-travel-x: max(0px, calc(100vw - var(--question-size)));
+            --question-travel-y: max(0px, calc(100vh - var(--question-size)));
+        }
+        @supports (height: 100dvh) {
+            #page-content {
+                --question-size: min(12dvh, 100dvw, 100dvh);
+                --question-travel-x: max(0px, calc(100dvw - var(--question-size)));
+                --question-travel-y: max(0px, calc(100dvh - var(--question-size)));
+            }
+        }
+        .qmks > div {
+            left: 0; top: 0;
+            width: var(--question-size); height: var(--question-size);
+            pointer-events: none;
+        }
+        .qmks > div > button {
+            position: absolute; left: 0; top: 0;
+            pointer-events: auto;
+            width: var(--question-size); height: var(--question-size);
+            margin: 0; padding: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: calc(var(--question-size) * 5 / 6); line-height: 1;
+            overflow: hidden;
+        }
+        .question-glyph {
+            display: inline-block; line-height: 1; pointer-events: none;
+            animation: question-turn 24s linear infinite alternate;
+            animation-delay: inherit;
+        }
+        @keyframes question-turn {
+            0%, 100% { transform: rotate(0deg); }
+            75% { transform: rotate(720deg); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .question-glyph { animation: none; }
+        }
+
         @keyframes x {
           75% {
-              transform: translateX(calc(96vw - 0.5vw));
+              transform: translateX(var(--question-travel-x));
           }
           100%{
               transform: none;
@@ -290,31 +317,19 @@
 
         @keyframes y {
           75% {
-              transform: translateY(calc(90vh - 0.5vh)) rotate(720deg);
+              transform: translateY(var(--question-travel-y));
           }
           100% {
               transform: none;
           }
         }
         
-        @keyframes yabout {
-          75% {
-              transform: translateY(calc(90vh - 0.5vh));
-          }
-          100% {
-              transform: none;
-          }
-        }
         
         .dropbtn:hover {
             cursor: pointer;
             opacity: 1;
         }
         
-        .dropbtn:hover ~ .aboutword {
-            cursor: pointer;
-            opacity: 1;
-        }
 
     </style>
 
@@ -331,6 +346,7 @@
             aboutFocus = document.activeElement;
             panel.style.display = 'block';
             panel.setAttribute('aria-hidden', 'false');
+            document.getElementById('about-close').hidden = false;
             document.getElementById('about-close').focus({ preventScroll: true });
         }
 
@@ -338,6 +354,7 @@
             const panel = document.getElementById('aboutoverlay');
             panel.style.display = 'none';
             panel.setAttribute('aria-hidden', 'true');
+            document.getElementById('about-close').hidden = true;
             if (aboutFocus?.isConnected) aboutFocus.focus({ preventScroll: true });
         }
 
@@ -348,13 +365,10 @@
                 event.preventDefault();
                 aboutoff();
             } else if (event.key === 'Tab') {
-                const controls = [...panel.querySelectorAll('button, a[href]')];
-                const first = controls[0], last = controls[controls.length - 1];
-                if (event.shiftKey && (document.activeElement === first || !panel.contains(document.activeElement))) {
-                    event.preventDefault(); last.focus();
-                } else if (!event.shiftKey && (document.activeElement === last || !panel.contains(document.activeElement))) {
-                    event.preventDefault(); first.focus();
-                }
+                const controls = [document.getElementById('about-close'), ...panel.querySelectorAll('a[href]')];
+                const index = controls.indexOf(document.activeElement);
+                event.preventDefault();
+                controls[(index + (event.shiftKey ? -1 : 1) + controls.length) % controls.length].focus();
             }
         });
     </script>
@@ -369,15 +383,9 @@
             -webkit-user-select: none;
         }
 
-        .distortion-layer {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-        }
 
         @media (prefers-reduced-motion: reduce) {
-            #interaction-overlay { display: none; }
-            .dropdown, .dropbtn, .aboutword, .shadow1, .shadow1btn, .shadow2, .shadow2btn, .shadow3, .shadow3btn {
+            .dropdown, .dropbtn, .shadow1, .shadow1btn, .shadow2, .shadow2btn, .shadow3, .shadow3btn {
                 animation: none;
             }
         }
@@ -397,12 +405,7 @@
         }
         #artwork-close { opacity: 0; }
     </style>
-    <script src="effects/displacement-field.js?v=2ff08f0bc297"></script>
-    <script src="effects/svg-renderer.js?v=e7437e40837c"></script>
-    <script src="effects/scene-copy.js?v=5e420d29075b"></script>
-    <script src="effects/input-controller.js?v=8874acb63b80"></script>
-    <script src="effects/overlay-visibility.js?v=47175f8a1343"></script>
-    <script src="persistent-effects.js?v=b33d3f4967f5"></script>
+    <script src="desktop-ink.js?v=21871acf9d2f"></script>
     <script src="artwork-viewer.js"></script>
     </body>
 </html>

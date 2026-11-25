@@ -6,6 +6,7 @@
     const mouseInput = page.dataset.effectsInput === 'mouse';
     const textLinkCursor = page.dataset.cursorPolicy === 'text-links';
     const allContent = page.dataset.effectsScope === 'all';
+    const scroll = window.mobileScroll;
     const field = modules.createDisplacementField({
         smudgeWidthScale: Number(page.dataset.smudgeWidthScale ?? 1),
         smudgeStrengthScale: Number(page.dataset.smudgeStrengthScale ?? 1),
@@ -26,6 +27,7 @@
         mouseInput, textLinkCursor, allContent, reducedMotion, sourcePoint, wake,
         captureTaps: page.dataset.effectsInput === 'touch',
         manualTouchScroll: document.documentElement.hasAttribute('data-direct-scroll'),
+        readPosition: scroll?.readPosition, scrollTarget: scroll?.eventTarget,
         isSuspended: visibility.isSuspended, hasSurface: () => !!scene,
         onSmudge: (x, y, dx, dy) => stamp('smudge', x, y, dx, dy),
         onTap: (x, y) => stamp('tap', x, y)
@@ -42,7 +44,8 @@
 
     function ensureSurface() {
         if (scene) return;
-        scene = modules.createSceneCopy({ page, overlay, allContent, mouseInput, wake });
+        scene = modules.createSceneCopy({ page, overlay, allContent, mouseInput, wake,
+            readPosition: scroll?.readPosition });
         renderer = modules.createSvgRenderer({
             root: scene.root, scene: scene.scene, wake, onError: () => { dirty = true; }
         });

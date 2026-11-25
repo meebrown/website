@@ -2,7 +2,8 @@
     const modules = window.GalleryEffectsModules ||= {};
 
     // Own the visual page copy and keep its DOM, hover, and animations aligned.
-    modules.createSceneCopy = ({ page, overlay, allContent, mouseInput, wake }) => {
+    modules.createSceneCopy = ({ page, overlay, allContent, mouseInput, wake,
+        readPosition = () => ({ x: window.scrollX, y: window.scrollY }) }) => {
         const overlayIds = [...page.querySelectorAll('[id$="overlay"]')].map(element => element.id);
         const viewerAnimations = new Map();
         const layer = document.createElement('div');
@@ -96,8 +97,9 @@
 
         function syncScroll() {
             // The distortion stays on the glass as live content scrolls beneath it.
+            const position = readPosition();
             root.getElementById('editor-section').style.transform =
-                `translate(${-window.scrollX}px, ${-window.scrollY}px)`;
+                `translate(${-position.x}px, ${-position.y}px)`;
         }
 
         function sync({ mousePoint = null, suspended = false, freezeVisibility = false,

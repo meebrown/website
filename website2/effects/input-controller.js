@@ -5,14 +5,16 @@
     // the displayed distortion. Field storage and rendering live elsewhere.
     modules.createInputController = ({ mouseInput, textLinkCursor, allContent,
         reducedMotion, isSuspended, sourcePoint, onSmudge, onTap, wake,
-        hasSurface = () => true, captureTaps = false, manualTouchScroll = false }) => {
+        hasSurface = () => true, captureTaps = false, manualTouchScroll = false,
+        readPosition = () => ({ x: window.scrollX, y: window.scrollY }),
+        scrollTarget = window }) => {
         let touch = null;
         let pinching = false;
         let gesture = null;
         let tap = null;
         let mousePoint = null;
         let cursorPoint = null;
-        let lastScrollY = window.scrollY;
+        let lastScrollY = readPosition().y;
         let anchor = { x: innerWidth / 2, y: innerHeight / 2 };
         // Touch pages draw scroll strokes only after a real swipe or wheel input.
         let validScrollAnchor = false;
@@ -27,10 +29,14 @@
             if (dx || dy) onSmudge(x, y, dx, dy);
         }
 
+        function trackTouch(point, drawing = false) {
+            return { id: point.identifier, x: point.clientX, y: point.clientY, drawing };
+        }
+
         function reset() {
             touch = gesture = tap = null;
             mousePoint = null;
-            lastScrollY = window.scrollY;
+            lastScrollY = readPosition().y;
             anchor = { x: innerWidth / 2, y: innerHeight / 2 };
             validScrollAnchor = false;
         }
@@ -52,25 +58,36 @@
                 reset();
                 pinching = true;
             }
-            touch = event.touches.length === 1 ? {
-                x: event.touches[0].clientX, y: event.touches[0].clientY
-            } : null;
+            touch = event.touches.length === 1 ? trackTouch(event.touches[0]) : null;
         }, { passive: true });
         document.addEventListener('touchmove', event => {
             if (pinching || event.touches.length !== 1) { touch = null; return; }
             const point = event.touches[0];
-            if (touch) smudge(point.clientX, point.clientY,
-                point.clientX - touch.x, point.clientY - touch.y);
+            const dx = touch ? point.clientX - touch.x : 0;
+            const dy = touch ? point.clientY - touch.y : 0;
+            const drawing = !!touch && (touch.drawing || dx !== 0 || dy !== 0);
+            if (touch) smudge(point.clientX, point.clientY, dx, dy);
             if (!mouseInput) validScrollAnchor = true;
-            touch = anchor = { x: point.clientX, y: point.clientY };
+            touch = anchor = trackTouch(point, drawing);
         }, { passive: true });
         for (const name of ['touchend', 'touchcancel']) {
             document.addEventListener(name, event => {
+                if (name === 'touchend' && !mouseInput && manualTouchScroll && !pinching && touch) {
+                    const point = [...(event.changedTouches || [])].find(item => item.identifier === touch.id);
+                    if (point) {
+                        const dx = point.clientX - touch.x, dy = point.clientY - touch.y;
+                        // Safari may omit a fast swipe's last touchmove. Continue
+                        // an existing stroke, or require a drag-sized final gap.
+                        if ((dx || dy) && (touch.drawing || dx * dx + dy * dy > 64)) {
+                            smudge(point.clientX, point.clientY, dx, dy);
+                        }
+                    }
+                }
                 if (!mouseInput && manualTouchScroll) {
                     // Direct scrolling already stamped this movement in touchmove.
                     // Consume any scroll event queued just before the finger lifted.
                     validScrollAnchor = false;
-                    lastScrollY = window.scrollY;
+                    lastScrollY = readPosition().y;
                 }
                 touch = null;
                 if (name === 'touchcancel' && !mouseInput) validScrollAnchor = false;
@@ -81,9 +98,10 @@
             anchor = { x: event.clientX, y: event.clientY };
             if (!mouseInput) validScrollAnchor = !event.ctrlKey;
         }, { passive: true });
-        window.addEventListener('scroll', () => {
-            const delta = window.scrollY - lastScrollY;
-            lastScrollY = window.scrollY;
+        scrollTarget.addEventListener('scroll', () => {
+            const scrollY = readPosition().y;
+            const delta = scrollY - lastScrollY;
+            lastScrollY = scrollY;
             // touchmove already supplies the finger's direction; scroll also covers momentum.
             if (!touch && delta && (mouseInput || validScrollAnchor)) {
                 smudge(anchor.x, anchor.y, 0, -delta);
@@ -96,7 +114,7 @@
             if (isSuspended()) { gesture = null; return; }
             if (!event.isPrimary || event.button !== 0) { gesture = null; return; }
             gesture = { id: event.pointerId, x: event.clientX, y: event.clientY,
-                start: performance.now(), moved: false, scrollY: window.scrollY };
+                start: performance.now(), moved: false, scrollY: readPosition().y };
         }, { passive: true });
         document.addEventListener('pointermove', event => {
             if (textLinkCursor && event.pointerType === 'mouse') {
@@ -135,7 +153,7 @@
         document.addEventListener('pointercancel', () => { gesture = tap = null; }, { passive: true });
         document.addEventListener('pointerup', event => {
             if (gesture && event.pointerId === gesture.id && !gesture.moved &&
-                Math.abs(window.scrollY - gesture.scrollY) < 5 &&
+                Math.abs(readPosition().y - gesture.scrollY) < 5 &&
                 performance.now() - gesture.start < 600) {
                 tap = { x: event.clientX, y: event.clientY, time: performance.now() };
             }

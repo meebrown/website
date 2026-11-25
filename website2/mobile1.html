@@ -5,7 +5,7 @@
         <title>Matthew Brown</title>
     </head>
     <body onload="document.body.style.opacity='1'">
-        <div id="page-content" data-viewer-side-margin="20" data-effects-input="touch" data-effects-scope="all" data-smudge-width-scale="0.5625" data-smudge-strength-scale="1.05" data-tap-radius-scale="0.8" data-tap-strength-scale="3">
+        <div id="page-content" data-viewer-side-margin="20" data-effects-input="touch" data-effects-scope="all" data-scroll-mode="contained" data-smudge-width-scale="0.5625" data-smudge-strength-scale="1.05" data-tap-radius-scale="0.8" data-tap-strength-scale="3">
         <div class="qmks" onclick="abouton()">
             <div class="dropdown">
                 <button class="dropbtn" onclick="abouton()"><span class="question-glyph">?</span></button>
@@ -46,6 +46,17 @@
         html { touch-action: pinch-zoom; overscroll-behavior: none; scroll-behavior: auto; }
         html[data-scroll-zoomed] { touch-action: auto; }
         body { overscroll-behavior: none; }
+        html, body { height: 100%; overflow: hidden; }
+        body { position: fixed; inset: 0; }
+        #page-content {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; overscroll-behavior: none;
+            overflow-anchor: none; scroll-behavior: auto;
+        }
+        @supports (height: 100svh) {
+            /* Safari's toolbar must not change the gallery's scroll range. */
+            #page-content { height: 100svh; }
+        }
         /* Keep the filtered source bounded to the viewport on mobile Safari. */
         .distortion-scene { overflow: hidden; }
         html, body, body * { cursor: none !important; }
@@ -247,6 +258,8 @@
                 --question-travel-y: max(0px, calc(100dvh - var(--question-size)));
             }
         }
+        .qmks { pointer-events: none; }
+        .qmks button { pointer-events: auto; }
         .qmks > div {
             left: 0; top: 0;
             width: var(--question-size); height: var(--question-size);
@@ -375,13 +388,13 @@
         }
         #artwork-close { opacity: 0; }
     </style>
-    <script src="mobile-scroll.js?v=d097bee64a10"></script>
+    <script src="mobile-scroll.js?v=283d3ac3af39"></script>
     <script src="effects/displacement-field.js?v=2ff08f0bc297"></script>
     <script src="effects/svg-renderer.js?v=e7437e40837c"></script>
-    <script src="effects/scene-copy.js?v=5e420d29075b"></script>
-    <script src="effects/input-controller.js?v=8874acb63b80"></script>
+    <script src="effects/scene-copy.js?v=dd1d33ab4fcc"></script>
+    <script src="effects/input-controller.js?v=210bbed13dfa"></script>
     <script src="effects/overlay-visibility.js?v=47175f8a1343"></script>
-    <script src="persistent-effects.js?v=b33d3f4967f5"></script>
-    <script src="artwork-viewer.js"></script>
+    <script src="persistent-effects.js?v=fa9220bdfb78"></script>
+    <script src="artwork-viewer.js?v=e240fd3527ed"></script>
     </body>
 </html>

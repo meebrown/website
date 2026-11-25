@@ -50,6 +50,10 @@
 
     function lockScroll(session) {
         if (!mobile) return;
+        if (window.mobileScroll?.lock) {
+            session.releaseScroll = window.mobileScroll.lock();
+            return;
+        }
         session.scroll = { x: window.scrollX, y: window.scrollY };
         session.scrollStyles = [document.documentElement, document.body].map(element => ({
             element, overflow: element.style.overflow,
@@ -66,6 +70,12 @@
     }
 
     function unlockScroll(session) {
+        if (session.releaseScroll) {
+            const release = session.releaseScroll;
+            session.releaseScroll = null;
+            release();
+            return;
+        }
         if (!session.scrollStyles) return;
         for (const saved of session.scrollStyles) {
             saved.element.style.overflow = saved.overflow;
